@@ -1,0 +1,17 @@
+#!/bin/bash -l
+#PBS -N RNA_hisat2_alignment
+#PBS -l nodes=1:ppn=48
+#PBS -l mem=40gb
+#PBS -l walltime=72:00:00
+
+module load HISAT2/2.2.1-gompi-2023a
+: "${R1:?Set R1}"
+: "${R2:?Set R2}"
+: "${HISAT2_INDEX:?Set HISAT2_INDEX}"
+: "${SPLICE_SITES:?Set SPLICE_SITES}"
+: "${OUT_PREFIX:?Set OUT_PREFIX}"
+: "${RG_ID:?Set RG_ID}"
+: "${SAMPLE:?Set SAMPLE}"
+THREADS=${PBS_NP:-48}
+SCRIPT_DIR=${SCRIPT_DIR:?Set SCRIPT_DIR to RNAseq/03_alignment absolute path}
+bash "$SCRIPT_DIR/hisat2_alignment.sh" "$R1" "$R2" "$HISAT2_INDEX" "$SPLICE_SITES" "$OUT_PREFIX" "$THREADS" "$RG_ID" "$SAMPLE" "${LIBRARY:-SMARTer_Total_RNA_Mammalian_Pico_Input}" "${PLATFORM_UNIT:-NovaSeqX}"

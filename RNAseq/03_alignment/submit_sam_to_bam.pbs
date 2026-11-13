@@ -1,0 +1,12 @@
+#!/bin/bash -l
+#PBS -N RNA_sam_to_bam
+#PBS -l nodes=1:ppn=16
+#PBS -l mem=40gb
+#PBS -l walltime=10:00:00
+
+module load SAMtools/1.18-GCC-12.3.0
+: "${INPUT_SAM:?Set INPUT_SAM}"
+: "${OUTPUT_BAM:?Set OUTPUT_BAM}"
+THREADS=${PBS_NP:-16}
+SCRIPT_DIR=${SCRIPT_DIR:?Set SCRIPT_DIR to RNAseq/03_alignment absolute path}
+bash "$SCRIPT_DIR/sam_to_bam.sh" "$INPUT_SAM" "$OUTPUT_BAM" "$THREADS"
