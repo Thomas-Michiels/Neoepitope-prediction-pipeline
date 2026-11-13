@@ -1,0 +1,9 @@
+#!/bin/bash -l
+#PBS -N WGS_VEP
+#PBS -l nodes=1:ppn=16
+#PBS -l mem=30gb
+#PBS -l walltime=24:00:00
+
+module load VEP/113.0-GCC-12.3.0
+: "${SCRIPT:?Set SCRIPT}" "${INPUT_VCF:?Set INPUT_VCF}" "${OUT:?Set OUT}" "${STATS:?Set STATS}" "${CACHE_DIR:?Set CACHE_DIR}" "${REF:?Set REF}"
+bash "$SCRIPT" "$INPUT_VCF" "$OUT" "$STATS" "$CACHE_DIR" "$REF" "${FORKS:-16}"
