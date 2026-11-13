@@ -1,0 +1,9 @@
+#!/bin/bash -l
+#PBS -N WGS_Mutect2
+#PBS -l nodes=1:ppn=1
+#PBS -l mem=60gb
+#PBS -l walltime=70:00:00
+
+module load GATK/4.6.0.0-GCCcore-13.2.0-Java-17
+: "${SCRIPT:?Set SCRIPT}" "${REF:?Set REF}" "${TUMOR_BAM:?Set TUMOR_BAM}" "${NORMAL_BAM:?Set NORMAL_BAM}" "${NORMAL_SAMPLE:?Set NORMAL_SAMPLE}" "${OUT:?Set OUT}"
+bash "$SCRIPT" "$REF" "$TUMOR_BAM" "$NORMAL_BAM" "$NORMAL_SAMPLE" "$OUT" "${JAVA_HEAP:-56g}"
