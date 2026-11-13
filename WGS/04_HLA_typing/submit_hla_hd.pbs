@@ -1,0 +1,19 @@
+#!/bin/bash -l
+#PBS -N HLA_HD
+#PBS -l nodes=1:ppn=18
+#PBS -l mem=30gb
+#PBS -l walltime=48:00:00
+
+module load Bowtie2/2.5.4-GCC-13.2.0
+
+: "${SCRIPT:?Set SCRIPT}"
+: "${R1:?Set R1}"
+: "${R2:?Set R2}"
+: "${SAMPLE:?Set SAMPLE}"
+: "${OUT_DIR:?Set OUT_DIR}"
+: "${VSC_DATA_VO:?VSC_DATA_VO must be available on the HPC}"
+
+HLAHD_ROOT="${HLAHD_ROOT:-$VSC_DATA_VO/Shared_Software/hlahd.1.7.0}"
+THREADS="${THREADS:-${PBS_NP:-18}}"
+
+bash "$SCRIPT" "$R1" "$R2" "$SAMPLE" "$OUT_DIR" "$HLAHD_ROOT" "$THREADS"
