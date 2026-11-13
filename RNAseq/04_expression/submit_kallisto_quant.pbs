@@ -1,0 +1,10 @@
+#!/bin/bash -l
+#PBS -N RNA_Kallisto
+#PBS -l nodes=1:ppn=18
+#PBS -l mem=50gb
+#PBS -l walltime=24:00:00
+
+module load kallisto/0.51.1-gompi-2023a
+: "${KALLISTO_INDEX:?Set KALLISTO_INDEX}" "${R1_FASTQ:?Set R1_FASTQ}" "${R2_FASTQ:?Set R2_FASTQ}" "${OUTPUT_DIR:?Set OUTPUT_DIR}"
+SCRIPT_DIR="${PBS_O_WORKDIR:-$PWD}/RNAseq/04_expression"
+"$SCRIPT_DIR/kallisto_quant.sh" "$KALLISTO_INDEX" "$R1_FASTQ" "$R2_FASTQ" "$OUTPUT_DIR" "${PBS_NP:-18}"
