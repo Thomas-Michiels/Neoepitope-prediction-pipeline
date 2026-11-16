@@ -1,0 +1,17 @@
+#!/bin/bash -l
+#PBS -N ASEReadCounter
+#PBS -l nodes=1:ppn=1
+#PBS -l mem=60gb
+#PBS -l walltime=24:00:00
+
+module load GATK/4.4.0.0-GCCcore-12.3.0-Java-17
+
+: "${REF:?Set REF}"
+: "${BAM:?Set BAM}"
+: "${VCF:?Set VCF}"
+: "${OUT:?Set OUT}"
+
+
+bash ase_readcounter.sh" \
+  "$REF" "$BAM" "$VCF" "$OUT" \
+  "${MIN_BQ:-2}" "${MIN_MQ:-10}"
