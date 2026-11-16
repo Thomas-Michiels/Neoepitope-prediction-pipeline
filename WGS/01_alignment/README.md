@@ -58,4 +58,4 @@ bash WGS/01_alignment/bwa_mem_alignment.sh \
     /path/to/output/sample.sorted.bam \
     /path/to/output/tmp/sample_sort \
     32 16
-```
+```WGS alignment maps paired-end sequencing reads using BWA-MEM.
