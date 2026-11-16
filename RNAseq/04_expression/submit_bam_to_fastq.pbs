@@ -4,6 +4,12 @@
 #PBS -l mem=20gb
 #PBS -l walltime=36:00:00
 
+# Paths and parameters used by this job:
+# INPUT_BAM: Path to the input BAM file
+# R1_FASTQ: Path to the read 1 FASTQ file
+# R2_FASTQ: Path to the read 2 FASTQ file
+# SCRIPT_DIR: Directory containing the corresponding analysis .sh script
+
 module load SAMtools/1.18-GCC-12.3.0
 : "${INPUT_BAM:?Set INPUT_BAM}" "${R1_FASTQ:?Set R1_FASTQ}" "${R2_FASTQ:?Set R2_FASTQ}"
 SCRIPT_DIR="${PBS_O_WORKDIR:-$PWD}/RNAseq/04_expression"

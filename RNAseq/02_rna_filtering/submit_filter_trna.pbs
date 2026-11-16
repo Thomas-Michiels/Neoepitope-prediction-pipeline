@@ -5,6 +5,14 @@
 #PBS -l walltime=72:00:00
 #PBS -j oe
 
+# Paths and parameters used by this job:
+# R1: Path to the read 1 FASTQ file
+# R2: Path to the read 2 FASTQ file
+# OUT: Output file path or output prefix, depending on the analysis script
+# INDEX: Path to the HISAT2 RNA-filter index prefix
+# THREADS: Number of CPU threads to use
+# SCRIPT_DIR: Directory containing the corresponding analysis .sh script
+
 module load HISAT2/2.2.1-gompi-2023a
 : "${R1:?Set R1}"
 : "${R2:?Set R2}"

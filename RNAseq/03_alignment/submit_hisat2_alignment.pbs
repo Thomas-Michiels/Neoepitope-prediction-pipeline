@@ -4,6 +4,19 @@
 #PBS -l mem=40gb
 #PBS -l walltime=72:00:00
 
+# Paths and parameters used by this job:
+# R1: Path to the read 1 FASTQ file
+# R2: Path to the read 2 FASTQ file
+# HISAT2_INDEX: Path to the HISAT2 genome index prefix (not an individual .ht2 file)
+# SPLICE_SITES: Path to the HISAT2 known splice sites file
+# OUT_PREFIX: Output file prefix for HISAT2 alignment
+# RG_ID: Read group identifier
+# SAMPLE: Sample identifier used in the output and read groups
+# THREADS: Number of CPU threads to use
+# SCRIPT_DIR: Directory containing the corresponding analysis .sh script
+# LIBRARY: Sequencing library name for read group metadata
+# PLATFORM_UNIT: Sequencing platform unit for read group metadata
+
 module load HISAT2/2.2.1-gompi-2023a
 : "${R1:?Set R1}"
 : "${R2:?Set R2}"

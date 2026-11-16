@@ -4,6 +4,17 @@
 #PBS -l mem=60gb
 #PBS -l walltime=48:00:00
 
+# Paths and parameters used by this job:
+# SCRIPT: Path to the corresponding analysis .sh script
+# INPUT_BAM: Path to the input BAM file
+# REF: Path to the reference genome FASTA file
+# MILLS: Path to the Mills known indels VCF
+# SNPS: Path to the known SNP sites VCF
+# DBSNP: Path to the dbSNP VCF
+# TABLE: Path for the BQSR recalibration table
+# OUT: Output file path or output prefix, depending on the analysis script
+# JAVA_HEAP: Java heap allocation (for example 56g)
+
 module load SAMtools/1.19.2-GCC-13.2.0
 module load GATK/4.6.0.0-GCCcore-13.2.0-Java-17
 cd "$PBS_O_WORKDIR"

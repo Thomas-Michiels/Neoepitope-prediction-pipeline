@@ -4,6 +4,14 @@
 #PBS -l mem=20gb
 #PBS -l walltime=24:00:00
 
+# Paths and parameters used by this job:
+# SCRIPT: Path to the corresponding analysis .sh script
+# R1: Path to the read 1 FASTQ file
+# R2: Path to the read 2 FASTQ file
+# OUT_R1: Path for the output read 1 FASTQ file
+# OUT_R2: Path for the output read 2 FASTQ file
+# BC_PATTERN: UMI-tools barcode pattern for UMI extraction
+
 module load UMI-tools/1.1.4-foss-2023a
 : "${SCRIPT:?Set SCRIPT}"
 : "${R1:?Set R1}"

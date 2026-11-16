@@ -4,6 +4,13 @@
 #PBS -l mem=20gb
 #PBS -l walltime=10:00:00
 
+# Paths and parameters used by this job:
+# TXIMPORT_R_SCRIPT: Path to the R script used for transcript-to-gene conversion
+# GTF_FILE: Path to the transcript annotation GTF file
+# ABUNDANCE_TSV: Path to Kallisto abundance.tsv
+# GENE_OUTPUT_TSV: Path for the gene-level expression TSV
+# SCRIPT_DIR: Directory containing the corresponding analysis .sh script
+
 module load R/4.5.1-gfbf-2025a
 module load R-bundle-Bioconductor/3.22-foss-2025a-R-4.5.1
 module load R-bundle-CRAN/2025.10-foss-2025a

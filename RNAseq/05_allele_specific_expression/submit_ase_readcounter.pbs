@@ -4,6 +4,13 @@
 #PBS -l mem=60gb
 #PBS -l walltime=24:00:00
 
+# Paths and parameters used by this job:
+# REF: Path to the reference genome FASTA file
+# VCF: Path to the input VCF file
+# OUT: Output file path or output prefix, depending on the analysis script
+# MIN_BQ: Minimum base quality for ASEReadCounter
+# MIN_MQ: Minimum mapping quality for ASEReadCounter
+
 module load GATK/4.4.0.0-GCCcore-12.3.0-Java-17
 
 : "${REF:?Set REF}"

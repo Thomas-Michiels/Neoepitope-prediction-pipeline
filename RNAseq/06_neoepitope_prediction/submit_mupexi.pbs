@@ -4,6 +4,19 @@
 #PBS -l mem=30gb
 #PBS -l walltime=24:00:00
 
+# Paths and parameters used by this job:
+# SAMPLE_NAME: Sample identifier used in output filenames
+# PEPTIDE_LENGTH: Peptide length in amino acids (for example 8, 9, 10 or 11)
+# HLA: Patient HLA alleles in the format required by the tool
+# VCF: Path to the input VCF file
+# EXPRESSION_TSV: Path to the transcript expression TSV
+# OUTPUT_DIR: Directory for output files
+# MUPEXI_SCRIPT: Path to the MuPeXI Python script
+# MUPEXI_CONFIG: Path to the MuPeXI config.ini file
+# THREADS: Number of CPU threads to use
+# EXPRESSION_LEVEL: MuPeXI expression level (for example transcript)
+# SCRIPT_DIR: Directory containing the corresponding analysis .sh script
+
 export SAMPLE_NAME="sample_01"
 export PEPTIDE_LENGTH=9
 export HLA="HLA-A02:01,HLA-B07:02"

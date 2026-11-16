@@ -5,6 +5,17 @@
 #PBS -l mem=60gb
 #PBS -l walltime=72:00:00
 
+# Paths and parameters used by this job:
+# SCRIPT: Path to the corresponding analysis .sh script
+# REF: Path to the reference genome FASTA file
+# R1: Path to the read 1 FASTQ file
+# R2: Path to the read 2 FASTQ file
+# SAMPLE: Sample identifier used in the output and read groups
+# OUT: Output file path or output prefix, depending on the analysis script
+# TMP_PREFIX: Prefix for temporary files
+# BWA_THREADS: Number of threads for BWA-MEM alignment
+# SORT_THREADS: Number of threads for BAM sorting
+
 module load BWA/0.7.18-GCCcore-13.2.0
 module load SAMtools/1.19.2-GCC-13.2.0
 

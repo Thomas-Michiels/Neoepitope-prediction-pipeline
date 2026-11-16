@@ -4,6 +4,15 @@
 #PBS -l mem=60gb
 #PBS -l walltime=70:00:00
 
+# Paths and parameters used by this job:
+# SCRIPT: Path to the corresponding analysis .sh script
+# REF: Path to the reference genome FASTA file
+# TUMOR_BAM: Path to the tumor BAM file
+# NORMAL_BAM: Path to the matched normal BAM file
+# NORMAL_SAMPLE: Normal sample name as recorded in the BAM read groups
+# OUT: Output file path or output prefix, depending on the analysis script
+# JAVA_HEAP: Java heap allocation (for example 56g)
+
 module load GATK/4.6.0.0-GCCcore-13.2.0-Java-17
 : "${SCRIPT:?Set SCRIPT}" "${REF:?Set REF}" "${TUMOR_BAM:?Set TUMOR_BAM}" "${NORMAL_BAM:?Set NORMAL_BAM}" "${NORMAL_SAMPLE:?Set NORMAL_SAMPLE}" "${OUT:?Set OUT}"
 bash "$SCRIPT" "$REF" "$TUMOR_BAM" "$NORMAL_BAM" "$NORMAL_SAMPLE" "$OUT" "${JAVA_HEAP:-56g}"

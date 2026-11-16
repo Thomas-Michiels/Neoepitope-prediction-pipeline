@@ -4,6 +4,13 @@
 #PBS -l mem=10gb
 #PBS -l walltime=01:00:00
 
+# Paths and parameters used by this job:
+# SCRIPT: Path to the corresponding analysis .sh script
+# REF: Path to the reference genome FASTA file
+# INPUT_VCF: Path to the input VCF file
+# FILTERED_VCF: Path for the filtered VCF output
+# PASS_VCF: Path for the PASS-only VCF output
+
 module load GATK/4.6.0.0-GCCcore-13.2.0-Java-17
 module load BCFtools/1.18-GCC-12.3.0
 : "${SCRIPT:?Set SCRIPT}" "${REF:?Set REF}" "${INPUT_VCF:?Set INPUT_VCF}" "${FILTERED_VCF:?Set FILTERED_VCF}" "${PASS_VCF:?Set PASS_VCF}"

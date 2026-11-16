@@ -4,6 +4,12 @@
 #PBS -l mem=20gb
 #PBS -l walltime=24:00:00
 
+# Paths and parameters used by this job:
+# INPUT_BAM: Path to the input BAM file
+# OUTPUT_BAM: Path for the output BAM file
+# SCRIPT_DIR: Directory containing the corresponding analysis .sh script
+# STATS_PREFIX: Prefix for UMI deduplication statistics files
+
 module load UMI-tools/1.1.4-foss-2023a
 module load SAMtools/1.18-GCC-12.3.0
 : "${INPUT_BAM:?Set INPUT_BAM}" "${OUTPUT_BAM:?Set OUTPUT_BAM}"

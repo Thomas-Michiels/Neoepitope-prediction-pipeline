@@ -4,6 +4,18 @@
 #PBS -l mem=60gb
 #PBS -l walltime=24:00:00
 
+# Paths and parameters used by this job:
+# R1: Path to the read 1 FASTQ file
+# R2: Path to the read 2 FASTQ file
+# BWA_REFERENCE: Path to the BWA-indexed reference genome FASTA file
+# OUTPUT_BAM: Path for the output BAM file
+# RG_ID: Read group identifier
+# SAMPLE: Sample identifier used in the output and read groups
+# THREADS: Number of CPU threads to use
+# SCRIPT_DIR: Directory containing the corresponding analysis .sh script
+# LIBRARY: Sequencing library name for read group metadata
+# PLATFORM_UNIT: Sequencing platform unit for read group metadata
+
 module load BWA/0.7.17-GCCcore-12.3.0 SAMtools/1.18-GCC-12.3.0
 : "${R1:?Set R1}"
 : "${R2:?Set R2}"

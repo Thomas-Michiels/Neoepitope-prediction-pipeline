@@ -4,6 +4,13 @@
 #PBS -l mem=50gb
 #PBS -l walltime=24:00:00
 
+# Paths and parameters used by this job:
+# KALLISTO_INDEX: Path to the Kallisto transcriptome index file
+# R1_FASTQ: Path to the read 1 FASTQ file
+# R2_FASTQ: Path to the read 2 FASTQ file
+# OUTPUT_DIR: Directory for output files
+# SCRIPT_DIR: Directory containing the corresponding analysis .sh script
+
 module load kallisto/0.51.1-gompi-2023a
 : "${KALLISTO_INDEX:?Set KALLISTO_INDEX}" "${R1_FASTQ:?Set R1_FASTQ}" "${R2_FASTQ:?Set R2_FASTQ}" "${OUTPUT_DIR:?Set OUTPUT_DIR}"
 SCRIPT_DIR="${PBS_O_WORKDIR:-$PWD}/RNAseq/04_expression"

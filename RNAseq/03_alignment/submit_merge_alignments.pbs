@@ -4,6 +4,13 @@
 #PBS -l mem=40gb
 #PBS -l walltime=48:00:00
 
+# Paths and parameters used by this job:
+# HISAT2_BAM: Path to the HISAT2-aligned BAM file
+# BWA_BAM: Path to the BWA-aligned BAM file
+# OUTPUT_BAM: Path for the output BAM file
+# THREADS: Number of CPU threads to use
+# SCRIPT_DIR: Directory containing the corresponding analysis .sh script
+
 module load SAMtools/1.18-GCC-12.3.0
 : "${HISAT2_BAM:?Set HISAT2_BAM}"
 : "${BWA_BAM:?Set BWA_BAM}"

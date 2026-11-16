@@ -4,6 +4,15 @@
 #PBS -l mem=30gb
 #PBS -l walltime=24:00:00
 
+# Paths and parameters used by this job:
+# SAMPLE_NAME: Sample identifier used in output filenames
+# PEPTIDE_LENGTH: Peptide length in amino acids (for example 8, 9, 10 or 11)
+# HLA: Patient HLA alleles in the format required by the tool
+# PEPTIDE_FASTA: Path to the peptide FASTA input file
+# OUTPUT_FILE: Path for the output results file
+# NETMHCPAN_BIN: netMHCpan executable or its full path
+# SCRIPT_DIR: Directory containing the corresponding analysis .sh script
+
 export SAMPLE_NAME="sample_01"
 export PEPTIDE_LENGTH=9
 export HLA="HLA-A02:01,HLA-B07:02"

@@ -3,6 +3,12 @@
 #PBS -l nodes=1:ppn=1
 #PBS -l mem=60gb
 #PBS -l walltime=48:00:00
+
+# Paths and parameters used by this job:
+# SCRIPT: Path to the corresponding analysis .sh script
+# INPUT_BAM: Path to the input BAM file
+# OUT: Output file path or output prefix, depending on the analysis script
+# TMP_PREFIX: Prefix for temporary files
 module load biobambam2/2.0.185-GCC-12.3.0
 module load SAMtools/1.18-GCC-12.3.0
 cd "$PBS_O_WORKDIR"
