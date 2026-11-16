@@ -1,6 +1,6 @@
 # Neoepitope Prediction Pipeline
 
-A  bioinformatics workflow for the identification and prioritization of tumor-specific neoepitopes using **whole-genome sequencing (WGS)** and **RNA sequencing (RNA-seq)** data.
+A bioinformatics workflow for the identification of tumor-specific neoepitopes using whole-genome sequencing (WGS) and RNA sequencing (RNA-seq) data.
 
 ## 1. Overview
 
@@ -10,13 +10,10 @@ This repository contains bioinformatics scripts used to identify, characterize, 
 
 This workflow combines:
 
-- **Whole-genome sequencing (WGS):** Identification of somatic variants by comparing tumor and matched normal DNA.
-- **RNA sequencing (RNA-seq):** Assessment of gene-level and transcript-level expression supporting candidate neoepitopes.
-- **HLA typing:** Identification of patient-specific HLA alleles occurs on both DNA and RNA level.
-- **Neoepitope prediction:** Generation of all possible mutant peptides arsing from patient-specific somatic variants and prediction of their binding to patient-specific HLA molecules.
-- **Candidate prioritization:** Integration of genomic, transcriptomic, and immunological characteristics to select top neoepitope candidates.
-
-The pipeline is organized into separate analysis modules to facilitate reproducibility, maintenance, and future workflow automation.
+- Whole-genome sequencing (WGS): Identification of somatic variants by comparing tumor and matched normal DNA.
+- RNA sequencing (RNA-seq): Assessment of gene-level and transcript-level expression supporting candidate neoepitopes.
+- HLA typing: Identification of patient-specific HLA alleles occurs on both DNA and RNA level.
+- Neoepitope prediction: Generation of all possible mutant peptides arising from patient-specific somatic variants and prediction of their binding to patient-specific HLA molecules.
 
 ## 2. Sequencing Data and Library Preparation
 
@@ -26,7 +23,7 @@ The workflow is primarily designed for paired-end sequencing data generated from
 
 Whole-genome sequencing should be performed on DNA extracted from tumor samples and matched normal material, such as peripheral blood.
 
-The workflow is designed for Illumina paired-end short-read WGS data, such as libraries generated using the **KAPA EvoPlus** library preparation workflow.
+The workflow is designed for Illumina paired-end short-read WGS data, such as libraries generated using the KAPA EvoPlus library preparation workflow.
 
 Tumor and matched normal sequencing data are analyzed together to distinguish somatic alterations from inherited genetic variation.
 
@@ -34,7 +31,7 @@ Tumor and matched normal sequencing data are analyzed together to distinguish so
 
 RNA sequencing is used to investigate transcriptional activity in tumor samples and determine whether genes carrying somatic variants are expressed.
 
-The RNA-seq workflow scripts are designed for libraries generated using the **SMARTer Stranded Total RNA-Seq Kit v3 – Pico Input Mammalian**, developed for low-input RNA samples. If other libary preparation kits are used, the UMI-based deduplication strategy should be adjusted accordingly
+The RNA-seq workflow scripts are designed for libraries generated using the SMARTer Stranded Total RNA-Seq Kit v3 – Pico Input Mammalian, developed for low-input RNA samples. If other library preparation kits are used, the UMI-based deduplication strategy should be adjusted accordingly
 
 ## 3. Bioinformatics Workflow
 
@@ -44,12 +41,12 @@ The WGS analysis starts with raw paired-end FASTQ files from tumor and matched n
 
 The main processing steps include:
 
-1. **Quality control:** Assessment of sequencing quality and read characteristics.
-2. **Read alignment:** Mapping of sequencing reads to the human reference genome (GRCh38) using BWA-MEM.
-3. **Alignment processing:** Sorting, duplicate marking, and base quality score recalibration (BQSR).
-4. **Somatic variant calling:** Identification of tumor-specific variants using GATK Mutect2.
-5. **Variant filtering:** Removal of likely sequencing artifacts and low-confidence variant calls.
-6. **Variant annotation:** Identification of genes, transcripts, and protein consequences affected by somatic variants.
+1. Quality control: Assessment of sequencing quality and read characteristics.
+2. Read alignment: Mapping of sequencing reads to the human reference genome (GRCh38) using BWA-MEM.
+3. Alignment processing: Sorting, duplicate marking, and base quality score recalibration (BQSR).
+4. Somatic variant calling: Identification of tumor-specific variants using GATK Mutect2.
+5. Variant filtering: Removal of likely sequencing artifacts and low-confidence variant calls.
+6. Variant annotation: Identification of genes, transcripts, and protein consequences affected by somatic variants.
 
 The primary output is a set of filtered somatic variants suitable for downstream neoepitope prediction.
 
@@ -59,13 +56,13 @@ RNA-seq analysis provides transcriptional information to support the interpretat
 
 The workflow includes:
 
-1. **Quality control:** Evaluation of raw sequencing reads.
-2. **UMI extraction:** Extraction of UMIs from the library-specific read structure using UMI-tools.
-3. **Adapter and quality trimming:** Removal of adapter sequences and low-quality bases.
-4. **RNA contamination filtering:** Removal of reads originating from abundant non-coding RNA species, including ribosomal RNA (rRNA), transfer RNA (tRNA), and small nucleolar RNA (snoRNA), where applicable.
-5. **Read alignment:** Two-step mapping of filtered reads to the human reference genome using HISAT2 and BWA-mem.
-6. **UMI-aware duplicate handling:** Identification of PCR duplicates using UMI information.
-7. **Transcript analysis:** Assessment of gene expression and transcript structures.
+1. Quality control: Evaluation of raw sequencing reads.
+2. UMI extraction: Extraction of UMIs from the library-specific read structure using UMI-tools.
+3. Adapter and quality trimming: Removal of adapter sequences and low-quality bases.
+4. RNA contamination filtering: Removal of reads originating from abundant non-coding RNA species, including ribosomal RNA (rRNA), transfer RNA (tRNA), and small nucleolar RNA (snoRNA), where applicable.
+5. Read alignment: Two-step mapping of filtered reads to the human reference genome using HISAT2 and BWA-mem.
+6. UMI-aware duplicate handling: Identification of PCR duplicates using UMI information.
+7. Transcript analysis: Assessment of gene expression and transcript structures.
 
 RNA-seq results can be used to evaluate the expression of genes containing somatic variants and provide additional evidence for candidate neoepitopes.
 
@@ -73,10 +70,8 @@ RNA-seq results can be used to evaluate the expression of genes containing somat
 
 Patient-specific HLA alleles can be identified using:
 
-- **HLA-LA / HLA-HD:** HLA genotyping using genomic sequencing data.
-- **seq2HLA:** HLA typing using RNA-seq data.
-
-Where available, HLA loss of heterozygosity (LOH) can also be investigated to identify HLA alleles that may have been lost in the tumor.
+- HLA-LA / HLA-HD: HLA genotyping using genomic sequencing data.
+- seq2HLA: HLA typing using RNA-seq data.
 
 The resulting HLA genotypes are used as inputs for peptide–HLA binding prediction.
 
@@ -88,8 +83,8 @@ Candidate peptides are subsequently evaluated for their predicted binding to pat
 
 The workflow supports:
 
-- **MHC class I prediction:** Using netMHCpan to evaluate candidate peptides for presentation by HLA class I molecules.
-- **MHC class II prediction:** Using netMHCIIpan to evaluate candidate peptides for presentation by HLA class II molecules.
+- MHC class I prediction: Using netMHCpan to evaluate candidate peptides for presentation by HLA class I molecules.
+- MHC class II prediction: Using netMHCIIpan to evaluate candidate peptides for presentation by HLA class II molecules.
 
 ### 3.5 Neoepitope Prioritization
 
@@ -122,7 +117,7 @@ Neoepitope-prediction-pipeline/
 │   └── 03_alignment/
 ├── HLA/
 │   └── 01_HLA_typing/
-└── Neoepitope_prediction/
+└── RNAseq/06_neoepitope_prediction/
     ├── 01_variant_annotation/
     ├── 02_peptide_generation/
     └── 03_binding_prediction/
