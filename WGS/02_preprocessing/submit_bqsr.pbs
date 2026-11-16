@@ -19,3 +19,5 @@ module load SAMtools/1.19.2-GCC-13.2.0
 module load GATK/4.6.0.0-GCCcore-13.2.0-Java-17
 cd "$PBS_O_WORKDIR"
 bash "$SCRIPT" "$INPUT_BAM" "$REF" "$MILLS" "$SNPS" "$DBSNP" "$TABLE" "$OUT" "${JAVA_HEAP:-4g}"
+
+gdkjgkd
