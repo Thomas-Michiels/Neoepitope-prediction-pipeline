@@ -1,0 +1,14 @@
+#!/bin/bash -l
+#PBS -N RNA_UMI_read1
+#PBS -l nodes=1:ppn=1
+#PBS -l mem=20gb
+#PBS -l walltime=24:00:00
+
+module load UMI-tools/1.1.4-foss-2023a
+: "${SCRIPT:?Set SCRIPT}"
+: "${R1:?Set R1}"
+: "${R2:?Set R2}"
+: "${OUT_R1:?Set OUT_R1}"
+: "${OUT_R2:?Set OUT_R2}"
+
+bash "$SCRIPT" "$R1" "$R2" "$OUT_R1" "$OUT_R2" "${BC_PATTERN:-NNNNNNNNXXXXXX}"

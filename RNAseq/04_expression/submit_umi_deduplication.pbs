@@ -1,0 +1,11 @@
+#!/bin/bash -l
+#PBS -N RNA_UMI_dedup
+#PBS -l nodes=1:ppn=1
+#PBS -l mem=20gb
+#PBS -l walltime=24:00:00
+
+module load UMI-tools/1.1.4-foss-2023a
+module load SAMtools/1.18-GCC-12.3.0
+: "${INPUT_BAM:?Set INPUT_BAM}" "${OUTPUT_BAM:?Set OUTPUT_BAM}"
+SCRIPT_DIR="${PBS_O_WORKDIR:-$PWD}/RNAseq/04_expression"
+"$SCRIPT_DIR/umi_deduplication.sh" "$INPUT_BAM" "$OUTPUT_BAM" ${STATS_PREFIX:+"$STATS_PREFIX"}

@@ -1,0 +1,13 @@
+#!/bin/bash -l
+#PBS -N RNA_merge_alignments
+#PBS -l nodes=1:ppn=16
+#PBS -l mem=40gb
+#PBS -l walltime=48:00:00
+
+module load SAMtools/1.18-GCC-12.3.0
+: "${HISAT2_BAM:?Set HISAT2_BAM}"
+: "${BWA_BAM:?Set BWA_BAM}"
+: "${OUTPUT_BAM:?Set OUTPUT_BAM}"
+THREADS=${PBS_NP:-16}
+SCRIPT_DIR=${SCRIPT_DIR:?Set SCRIPT_DIR to RNAseq/03_alignment absolute path}
+bash "$SCRIPT_DIR/merge_alignments.sh" "$HISAT2_BAM" "$BWA_BAM" "$OUTPUT_BAM" "$THREADS"

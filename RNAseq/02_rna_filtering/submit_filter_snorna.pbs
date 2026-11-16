@@ -1,0 +1,16 @@
+#!/bin/bash -l
+#PBS -N RNA_filter_snorna
+#PBS -l nodes=1:ppn=48
+#PBS -l mem=80gb
+#PBS -l walltime=72:00:00
+#PBS -j oe
+
+module load HISAT2/2.2.1-gompi-2023a
+: "${R1:?Set R1}"
+: "${R2:?Set R2}"
+: "${OUT:?Set OUT (output prefix)}"
+INDEX=${INDEX:-$VSC_DATA_VO/genomes/Hsapiens/sn-o-RNA/hisat2/hsa_sn-o-RNA.index}
+THREADS=${THREADS:-48}
+SAM=${SAM:-/dev/null}
+SCRIPT_DIR=${PBS_O_WORKDIR:-$(pwd)}
+bash "$SCRIPT_DIR/RNAseq/02_rna_filtering/filter_snorna.sh" "$R1" "$R2" "$INDEX" "$OUT" "$THREADS" "$SAM"

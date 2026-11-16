@@ -1,0 +1,17 @@
+#!/bin/bash -l
+#PBS -N mupexi
+#PBS -l nodes=1:ppn=48
+#PBS -l mem=30gb
+#PBS -l walltime=24:00:00
+
+# Configure the tool-specific Python/VEP environment before submission.
+: "${MUP_SCRIPT:?Set MUP_SCRIPT}"
+: "${VCF:?Set VCF}"
+: "${HLA:?Set HLA}"
+: "${LENGTH:?Set LENGTH}"
+: "${EXPR:?Set EXPR}"
+: "${OUT_DIR:?Set OUT_DIR}"
+: "${PREFIX:?Set PREFIX}"
+: "${CONFIG:?Set CONFIG}"
+SCRIPT_DIR=${SCRIPT_DIR:-$PBS_O_WORKDIR/Neoepitope_prediction}
+bash "$SCRIPT_DIR/mupexi.sh" "$MUP_SCRIPT" "$VCF" "$HLA" "$LENGTH" "$EXPR" "$OUT_DIR" "$PREFIX" "$CONFIG" "${THREADS:-48}" "${EXPR_LEVEL:-transcript}"
