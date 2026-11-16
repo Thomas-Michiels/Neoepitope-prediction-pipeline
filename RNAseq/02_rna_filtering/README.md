@@ -4,7 +4,7 @@ Sequential removal of reads mapping to rRNA, tRNA and sn-/snoRNA references.
 
 ## Inputs and outputs
 
-Each step accepts paired compressed FASTQs, a HISAT2 index prefix, and an output prefix. The paired **unmapped** reads are retained for the next stage, with filenames `<OUT>.fastq.1.gz` and `<OUT>.fastq.2.gz`.
+Each step accepts paired compressed FASTQs, a HISAT2 index prefix, and an output prefix. The paired unmapped reads are retained for the next stage, with filenames `<OUT>.fastq.1.gz` and `<OUT>.fastq.2.gz`.
 
 Index defaults in PBS wrappers to be changed accordingly:
 - `$VSC_DATA_VO/genomes/Hsapiens/rRNA/hisat2/hsa_rRNA.index`
@@ -48,4 +48,3 @@ For automatic scheduling, use `qsub -W depend=afterok:<previous_job_id>` on the 
 ```bash
 bash RNAseq/02_rna_filtering/filter_rrna.sh R1.fastq.gz R2.fastq.gz /path/hsa_rRNA.index /path/sample_rRNA_Filtered 16
 ```
-

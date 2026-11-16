@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-# Called by submit_mupexi.pbs. All settings are defined there.
 : "${MUPEXI_SCRIPT:?Missing MUPEXI_SCRIPT}"
 : "${VCF:?Missing VCF}"
 : "${HLA:?Missing HLA}"

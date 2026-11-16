@@ -1,18 +1,21 @@
-# MuPeXI and netMHCpan — simple PBS modules
+# Neoepitope prediction
 
-Each tool has one execution script and one PBS submission script.
+MuPeXI generates candidate mutant peptides using somatic variants, HLA alleles and RNA expression data. netMHCpan predicts peptide binding to the selected HLA alleles.
 
-## How to run
+## MuPeXI
 
-1. Open `submit_mupexi.pbs` or `submit_netmhcpan.pbs`.
-2. Edit the EDIT THESE SETTINGS section: sample, HLA alleles, peptide length, input/output paths, and tool installation paths.
-3. Add your Python/VEP or netMHCpan environment activation at the indicated comment.
-4. From the repository root, submit:
+Edit the sample settings and paths in `submit_mupexi.pbs`, then submit from the repository root:
 
 ```bash
-qsub Neoepitope_prediction/submit_mupexi.pbs
-qsub Neoepitope_prediction/submit_netmhcpan.pbs
+qsub RNAseq/06_neoepitope_prediction/submit_mupexi.pbs
 ```
 
-Run MuPeXI first if you plan to use its peptide FASTA for netMHCpan. Check the actual generated FASTA filename and put that path in `submit_netmhcpan.pbs`. 
+## netMHCpan
 
+Edit the peptide FASTA, HLA alleles, peptide length and output path in `submit_netmhcpan.pbs`:
+
+```bash
+qsub RNAseq/06_neoepitope_prediction/submit_netmhcpan.pbs
+```
+
+The execution commands are in `mupexi.sh` and `netmhcpan.sh`.

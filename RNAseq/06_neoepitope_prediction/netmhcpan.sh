@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-# Called by submit_netmhcpan.pbs. All settings are defined there.
 : "${PEPTIDE_FASTA:?Missing PEPTIDE_FASTA}"
 : "${HLA:?Missing HLA}"
 : "${PEPTIDE_LENGTH:?Missing PEPTIDE_LENGTH}"

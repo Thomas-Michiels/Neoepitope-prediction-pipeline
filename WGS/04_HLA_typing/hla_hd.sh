@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# Arguments: R1 R2 SAMPLE OUT_DIR HLAHD_ROOT THREADS
 R1="${1:?Provide R1 FASTQ}"
 R2="${2:?Provide R2 FASTQ}"
 SAMPLE="${3:?Provide sample identifier}"

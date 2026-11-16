@@ -11,13 +11,13 @@ This module marks duplicate reads in coordinate-sorted WGS BAM files and perform
 
 ## Inputs and outputs
 
-**Duplicate marking:** coordinate-sorted BAM (`INPUT_BAM`), output BAM (`OUT`), and sorting temporary prefix (`TMP_PREFIX`). Outputs duplicate-marked BAM (`OUT`) and index (`OUT.bai`).
+Duplicate marking: coordinate-sorted BAM (`INPUT_BAM`), output BAM (`OUT`), and sorting temporary prefix (`TMP_PREFIX`). Outputs duplicate-marked BAM (`OUT`) and index (`OUT.bai`).
 
-**BQSR:** duplicate-marked BAM (`INPUT_BAM`), GRCh38 reference (`REF`), known-sites VCFs (`MILLS`, `SNPS`, `DBSNP`), recalibration table (`TABLE`), and recalibrated BAM (`OUT`). Outputs recalibration table, recalibrated BAM, and index.
+BQSR: duplicate-marked BAM (`INPUT_BAM`), GRCh38 reference (`REF`), known-sites VCFs (`MILLS`, `SNPS`, `DBSNP`), recalibration table (`TABLE`), and recalibrated BAM (`OUT`). Outputs recalibration table, recalibrated BAM, and index.
 
 ## Software
 
-Original module versions:
+Software:
 
 - `biobambam2/2.0.185-GCC-12.3.0`
 - `SAMtools/1.19.2-GCC-13.2.0` (BQSR)
@@ -33,7 +33,7 @@ Around 60GB RAM and 48 hours are recommended for 100X WGS datasets, however this
 
 From the repository root, set full paths. `qsub -v` values must not contain commas.
 
-**1. Mark duplicates on the complete aligned BAM:**
+1. Mark duplicates on the complete aligned BAM:
 
 ```bash
 SCRIPT="$(pwd)/WGS/02_preprocessing/mark_duplicates.sh"
@@ -44,7 +44,7 @@ TMP_PREFIX="/path/to/tmp/sample_markdup"
 qsub -v "SCRIPT=$SCRIPT,INPUT_BAM=$INPUT_BAM,OUT=$OUT,TMP_PREFIX=$TMP_PREFIX" WGS/02_preprocessing/submit_mark_duplicates.pbs
 ```
 
-**2. Apply BQSR to the complete duplicate-marked BAM:**
+2. Apply BQSR to the complete duplicate-marked BAM:
 
 ```bash
 SCRIPT="$(pwd)/WGS/02_preprocessing/bqsr.sh"

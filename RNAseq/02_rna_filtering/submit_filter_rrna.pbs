@@ -9,7 +9,7 @@ module load HISAT2/2.2.1-gompi-2023a
 : "${R1:?Set R1}"
 : "${R2:?Set R2}"
 : "${OUT:?Set OUT (output prefix)}"
-INDEX=${INDEX:-$VSC_DATA_VO/genomes/Hsapiens/rRNA/hisat2/hsa_rRNA.index}
+INDEX=${INDEX:.../hsa_rRNA.index}
 THREADS=${THREADS:-48}
 SAM=${SAM:-/dev/null}
 SCRIPT_DIR=${PBS_O_WORKDIR:-$(pwd)}

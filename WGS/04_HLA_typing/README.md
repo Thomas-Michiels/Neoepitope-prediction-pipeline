@@ -15,7 +15,7 @@ Outputs: HLA-HD typing results under `OUT_DIR`, in a sample-specific results dir
 
 ## Software
 
-Original workflow versions:
+Software:
 
 - `HLA-HD 1.7.0` (installed under `$VSC_DATA_VO/Shared_Software/hlahd.1.7.0`)
 - `Bowtie2/2.5.4-GCC-13.2.0`
@@ -31,13 +31,13 @@ The tumor and healthy PBS scripts requested 18 CPU cores, 30 GB memory, and 48 h
 From the repository root on the HPC:
 
 ```bash
-SCRIPT="$(pwd)/HLA/HLA_typing/hla_hd.sh"
+SCRIPT="$(pwd)/WGS/04_HLA_typing/hla_hd.sh"
 R1="/path/to/normal_R1.fastq.gz"
 R2="/path/to/normal_R2.fastq.gz"
 SAMPLE="normal_sample"
 OUT_DIR="/path/to/output/HLA"
 
-qsub -v "SCRIPT=$SCRIPT,R1=$R1,R2=$R2,SAMPLE=$SAMPLE,OUT_DIR=$OUT_DIR" HLA/HLA_typing/submit_hla_hd.pbs
+qsub -v "SCRIPT=$SCRIPT,R1=$R1,R2=$R2,SAMPLE=$SAMPLE,OUT_DIR=$OUT_DIR" WGS/04_HLA_typing/submit_hla_hd.pbs
 ```
 
 Repeat with tumor FASTQs and a distinct `SAMPLE` and `OUT_DIR` if tumor HLA typing is also required. The wrapper uses 18 threads by default. To override, add `THREADS=12` to the `qsub -v` string. To specify another installation, add `HLAHD_ROOT=/path/to/hlahd.1.7.0`.
@@ -47,7 +47,7 @@ Repeat with tumor FASTQs and a distinct `SAMPLE` and `OUT_DIR` if tumor HLA typi
 With Bowtie2 and HLA-HD dependencies available in the environment:
 
 ```bash
-bash HLA/HLA_typing/hla_hd.sh \
+bash WGS/04_HLA_typing/hla_hd.sh \
     /path/to/normal_R1.fastq.gz \
     /path/to/normal_R2.fastq.gz \
     normal_sample \

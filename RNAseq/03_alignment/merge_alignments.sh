@@ -1,10 +1,9 @@
 #!/usr/bin/env bash
-# Usage: merge_alignments.sh HISAT2.bam BWA.bam OUTPUT_SORTED.bam THREADS
 
 hisat=$1; bwa=$2; out=$3; threads=$4
 mkdir -p "$(dirname "$out")"
 tmp=$(mktemp -d "$(dirname "$out")/.merge_alignments.XXXXXXXX")
-trap 'rm -rf "$tmp"' EXIT
+
 # Preserve notebook MAPQ >= 10 for HISAT2; exclude unmapped, secondary and supplementary alignments.
 samtools view -@ "$threads" -b -q 10 -F 0x904 -o "$tmp/hisat.bam" "$hisat"
 # Preserve notebook's BWA exclusion of XA and SA tags and requirement for proper pairs.

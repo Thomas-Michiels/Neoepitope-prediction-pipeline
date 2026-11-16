@@ -15,7 +15,7 @@ Outputs: coordinate-sorted BAM (`OUT`) and its index (`OUT.bai`).
 
 ## Software
 
-Original module versions:
+Software:
 
 - `BWA/0.7.18-GCCcore-13.2.0`
 - `SAMtools/1.19.2-GCC-13.2.0`
@@ -59,4 +59,3 @@ bash WGS/01_alignment/bwa_mem_alignment.sh \
     /path/to/output/tmp/sample_sort \
     32 16
 ```
-

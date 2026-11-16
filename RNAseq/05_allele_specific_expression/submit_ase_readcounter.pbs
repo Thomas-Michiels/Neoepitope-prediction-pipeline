@@ -11,7 +11,6 @@ module load GATK/4.4.0.0-GCCcore-12.3.0-Java-17
 : "${VCF:?Set VCF}"
 : "${OUT:?Set OUT}"
 
-
-bash ase_readcounter.sh" \
+bash "${PBS_O_WORKDIR}/RNAseq/05_allele_specific_expression/ase_readcounter.sh" \
   "$REF" "$BAM" "$VCF" "$OUT" \
   "${MIN_BQ:-2}" "${MIN_MQ:-10}"

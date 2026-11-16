@@ -49,4 +49,3 @@ bash sam_to_bam.sh out/sample_hisat2.sam out/sample_hisat2.bam 16
 bash bwa_mem_alignment.sh out/sample_unmapped.fastq.1.gz out/sample_unmapped.fastq.2.gz hg38.fa out/sample_bwa.bam 48 sample_rg sample_id
 bash merge_alignments.sh out/sample_hisat2.bam out/sample_bwa.bam out/sample_merged.sorted.bam 16
 ```
-

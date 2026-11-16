@@ -13,29 +13,25 @@ This module calls somatic variants from paired tumor and matched-normal WGS BAM 
 
 ## Inputs and outputs
 
-**Mutect2:** BQSR-processed tumor BAM (`TUMOR_BAM`), matched-normal BAM (`NORMAL_BAM`), indexed GRCh38 FASTA (`REF`), and normal sample name in the BAM read-group SM field (`NORMAL_SAMPLE`). Outputs an unfiltered somatic VCF (`OUT`). 
+Mutect2: BQSR-processed tumor BAM (`TUMOR_BAM`), matched-normal BAM (`NORMAL_BAM`), indexed GRCh38 FASTA (`REF`), and normal sample name in the BAM read-group SM field (`NORMAL_SAMPLE`). Outputs an unfiltered somatic VCF (`OUT`). 
 
-**Filtering:** unfiltered Mutect2 VCF (`INPUT_VCF`) and reference (`REF`). Outputs a filtered VCF (`FILTERED_VCF`) and a PASS-only VCF (`PASS_VCF`).
+Filtering: unfiltered Mutect2 VCF (`INPUT_VCF`) and reference (`REF`). Outputs a filtered VCF (`FILTERED_VCF`) and a PASS-only VCF (`PASS_VCF`).
 
-**Annotation:** PASS-only VCF (`INPUT_VCF`), VEP merged cache directory (`CACHE_DIR`), reference FASTA (`REF`), output VCF.gz (`OUT`), and VEP statistics HTML (`STATS`).
+Annotation: PASS-only VCF (`INPUT_VCF`), VEP merged cache directory (`CACHE_DIR`), reference FASTA (`REF`), output VCF.gz (`OUT`), and VEP statistics HTML (`STATS`).
 
 ## Software
 
-Original module versions:
+Software:
 
 - `GATK/4.6.0.0-GCCcore-13.2.0-Java-17`
 - `BCFtools/1.18-GCC-12.3.0`
 - `VEP/113.0-GCC-12.3.0`
 
-## HPC resources
-
-The original per-chromosome PBS jobs requested 1 CPU, 60 GB memory and 70 hours for Mutect2; 1 CPU, 10 GB and 1 hour for FilterMutectCalls and PASS selection; and 14 CPUs, 30 GB and 24 hours for VEP. **Whole-genome jobs may require different walltime and memory allocations; these values are starting points, not validated whole-genome requirements.** Mutect2 uses a default 56 GB Java heap to leave some of the 60 GB allocation for non-heap memory.
-
 ## Submit with qsub
 
 Run these commands from the repository root. Use absolute paths without commas in `qsub -v` values.
 
-**1. Call somatic variants:**
+1. Call somatic variants:
 
 ```bash
 SCRIPT="$(pwd)/WGS/03_variant_calling/mutect2.sh"
@@ -48,7 +44,7 @@ OUT="/path/to/output/mutect2.vcf"
 qsub -v "SCRIPT=$SCRIPT,REF=$REF,TUMOR_BAM=$TUMOR_BAM,NORMAL_BAM=$NORMAL_BAM,NORMAL_SAMPLE=$NORMAL_SAMPLE,OUT=$OUT" WGS/03_variant_calling/submit_mutect2.pbs
 ```
 
-**2. Filter calls and retain PASS variants:**
+2. Filter calls and retain PASS variants:
 
 ```bash
 SCRIPT="$(pwd)/WGS/03_variant_calling/filter_mutect2_pass.sh"
@@ -59,7 +55,7 @@ PASS_VCF="/path/to/output/mutect2.filtered.PASS.vcf"
 qsub -v "SCRIPT=$SCRIPT,REF=$REF,INPUT_VCF=$INPUT_VCF,FILTERED_VCF=$FILTERED_VCF,PASS_VCF=$PASS_VCF" WGS/03_variant_calling/submit_filter_mutect2_pass.pbs
 ```
 
-**3. Annotate with VEP:**
+3. Annotate with VEP:
 
 ```bash
 SCRIPT="$(pwd)/WGS/03_variant_calling/annotate_vep.sh"

@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-# Usage: bash ase_readcounter.sh REF.fa RNA_dedup.bam prepared_variants.vcf[.gz] output.tsv [minBQ] [minMQ]
-
 REF=$1
 BAM=$2
 VCF=$3

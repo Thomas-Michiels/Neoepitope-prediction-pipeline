@@ -4,14 +4,16 @@
 #PBS -l mem=30gb
 #PBS -l walltime=24:00:00
 
-# Configure the tool-specific Python/VEP environment before submission.
-: "${MUP_SCRIPT:?Set MUP_SCRIPT}"
-: "${VCF:?Set VCF}"
-: "${HLA:?Set HLA}"
-: "${LENGTH:?Set LENGTH}"
-: "${EXPR:?Set EXPR}"
-: "${OUT_DIR:?Set OUT_DIR}"
-: "${PREFIX:?Set PREFIX}"
-: "${CONFIG:?Set CONFIG}"
-SCRIPT_DIR=${SCRIPT_DIR:-$PBS_O_WORKDIR/Neoepitope_prediction}
-bash "$SCRIPT_DIR/mupexi.sh" "$MUP_SCRIPT" "$VCF" "$HLA" "$LENGTH" "$EXPR" "$OUT_DIR" "$PREFIX" "$CONFIG" "${THREADS:-48}" "${EXPR_LEVEL:-transcript}"
+export SAMPLE_NAME="sample_01"
+export PEPTIDE_LENGTH=9
+export HLA="HLA-A02:01,HLA-B07:02"
+export VCF="/path/to/annotated.vcf"
+export EXPRESSION_TSV="/path/to/expression.tsv"
+export OUTPUT_DIR="/path/to/mupexi_results"
+export MUPEXI_SCRIPT="/path/to/MuPeXI.py"
+export MUPEXI_CONFIG="/path/to/config.ini"
+export THREADS=48
+export EXPRESSION_LEVEL="transcript"
+
+SCRIPT_DIR="${PBS_O_WORKDIR}/RNAseq/06_neoepitope_prediction"
+bash "$SCRIPT_DIR/mupexi.sh"

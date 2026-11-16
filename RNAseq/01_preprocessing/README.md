@@ -17,7 +17,7 @@ UMI inputs: paired FASTQ files (`R1`, `R2`), output FASTQ paths (`OUT_R1`, `OUT_
 
 UMI outputs: paired FASTQ files with UMI/barcode information extracted and recorded in the read identifiers according to UMI-tools conventions.
 
-In the UMI-tools string-pattern syntax, `N` is a UMI base, `C` is a cell-barcode base and `X` is a base to discard. For example, `NNNNNNNNXXXXXX` means an 8-base UMI followed by 6 discarded bases; it **does not** define a cell barcode. The default pattern is `NNNNNNNNXXXXXX` for both scripts, but the pattern should match the library preparation protocol.
+In the UMI-tools string-pattern syntax, `N` is a UMI base, `C` is a cell-barcode base and `X` is a base to discard. For example, `NNNNNNNNXXXXXX` means an 8-base UMI followed by 6 discarded bases; it does not define a cell barcode. The default pattern is `NNNNNNNNXXXXXX` for both scripts, but the pattern should match the library preparation protocol.
 
 ## Software
 
@@ -30,7 +30,7 @@ The original UMI extraction PBS script requested 1 CPU, 20 GB memory and 24 hour
 
 ## Submit with qsub
 
-For UMIs defined through SMARTer® Stranded Total RNA-Seq Kit v3 - Pico Input Mammalian:
+For UMIs defined through SMARTer Stranded Total RNA-Seq Kit v3 - Pico Input Mammalian:
 
 ```bash
 SCRIPT="$(pwd)/RNAseq/01_preprocessing/umi_extraction_read2.sh"

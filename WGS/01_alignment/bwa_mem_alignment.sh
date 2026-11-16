@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # WGS alignment: run separately for tumor and matched normal samples.
-# Arguments: reference R1 R2 sample_id output_bam temp_prefix bwa_threads sort_threads
 
 REF="$1"
 R1="$2"

@@ -4,15 +4,14 @@
 #PBS -l mem=30gb
 #PBS -l walltime=24:00:00
 
-
 export SAMPLE_NAME="sample_01"
-export PEPTIDE_LENGTH=9                    # 8, 9, 10, 11, ... 14
-export HLA="HLA-A02:01,HLA-B07:02"         # Replace with your sample's HLA alleles
+export PEPTIDE_LENGTH=9
+export HLA="HLA-A02:01,HLA-B07:02"
 
 export PEPTIDE_FASTA="/path/to/peptides_9mer.fasta"
 export OUTPUT_FILE="/path/to/netmhcpan_results/sample_01_9mer.xls"
 
-# Leave as netMHCpan if executable is already on PATH.
 export NETMHCPAN_BIN="netMHCpan"
 
-bash ".../netmhcpan.sh"
+SCRIPT_DIR="${PBS_O_WORKDIR}/RNAseq/06_neoepitope_prediction"
+bash "$SCRIPT_DIR/netmhcpan.sh"
