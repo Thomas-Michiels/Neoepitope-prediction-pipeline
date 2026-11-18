@@ -14,4 +14,4 @@
 module load kallisto/0.51.1-gompi-2023a
 : "${KALLISTO_INDEX:?Set KALLISTO_INDEX}" "${R1_FASTQ:?Set R1_FASTQ}" "${R2_FASTQ:?Set R2_FASTQ}" "${OUTPUT_DIR:?Set OUTPUT_DIR}"
 SCRIPT_DIR="${PBS_O_WORKDIR:-$PWD}/RNAseq/04_expression"
-"$SCRIPT_DIR/kallisto_quant.sh" "$KALLISTO_INDEX" "$R1_FASTQ" "$R2_FASTQ" "$OUTPUT_DIR" "${PBS_NP:-18}"
+bash "$SCRIPT_DIR/kallisto_quant.sh" "$KALLISTO_INDEX" "$R1_FASTQ" "$R2_FASTQ" "$OUTPUT_DIR" "${PBS_NP:-18}"

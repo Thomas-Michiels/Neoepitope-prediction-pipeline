@@ -16,4 +16,4 @@ module load R-bundle-Bioconductor/3.22-foss-2025a-R-4.5.1
 module load R-bundle-CRAN/2025.10-foss-2025a
 : "${TXIMPORT_R_SCRIPT:?Set TXIMPORT_R_SCRIPT}" "${GTF_FILE:?Set GTF_FILE}" "${ABUNDANCE_TSV:?Set ABUNDANCE_TSV}" "${GENE_OUTPUT_TSV:?Set GENE_OUTPUT_TSV}"
 SCRIPT_DIR="${PBS_O_WORKDIR:-$PWD}/RNAseq/04_expression"
-"$SCRIPT_DIR/kallisto_transcript_to_gene.sh" "$TXIMPORT_R_SCRIPT" "$GTF_FILE" "$ABUNDANCE_TSV" "$GENE_OUTPUT_TSV"
+bash "$SCRIPT_DIR/kallisto_transcript_to_gene.sh" "$TXIMPORT_R_SCRIPT" "$GTF_FILE" "$ABUNDANCE_TSV" "$GENE_OUTPUT_TSV"

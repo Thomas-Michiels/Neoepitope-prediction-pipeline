@@ -1,4 +1,6 @@
 #!/usr/bin/env Rscript
+# Usage: Rscript kallisto_gene_matrix_tximport_2.R <annotation.gtf> <abundance.tsv> <gene_output.tsv>
+if (length(commandArgs(trailingOnly = TRUE)) != 3) stop("Usage: Rscript kallisto_gene_matrix_tximport_2.R <gtf> <abundance.tsv> <output.tsv>")
 
 args <- commandArgs(trailingOnly = TRUE)
 gtf     <- args[1]

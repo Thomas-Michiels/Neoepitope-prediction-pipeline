@@ -13,4 +13,4 @@
 module load SAMtools/1.18-GCC-12.3.0
 : "${INPUT_BAM:?Set INPUT_BAM}" "${R1_FASTQ:?Set R1_FASTQ}" "${R2_FASTQ:?Set R2_FASTQ}"
 SCRIPT_DIR="${PBS_O_WORKDIR:-$PWD}/RNAseq/04_expression"
-"$SCRIPT_DIR/bam_to_fastq.sh" "$INPUT_BAM" "$R1_FASTQ" "$R2_FASTQ" "${PBS_NP:-4}"
+bash "$SCRIPT_DIR/bam_to_fastq.sh" "$INPUT_BAM" "$R1_FASTQ" "$R2_FASTQ" "${PBS_NP:-4}"
