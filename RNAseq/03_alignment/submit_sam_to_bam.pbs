@@ -4,15 +4,22 @@
 #PBS -l mem=40gb
 #PBS -l walltime=10:00:00
 
-# Paths and parameters used by this job:
-# INPUT_SAM: Path to the input SAM file
-# OUTPUT_BAM: Path for the output BAM file
-# THREADS: Number of CPU threads to use
-# SCRIPT_DIR: Directory containing the corresponding analysis .sh script
+# Run from the repository root, or pass REPO_DIR=/path/to/repository with qsub -v.
+#
+# Required variables (qsub -v):
+#   INPUT_SAM   HISAT2 SAM
+#   OUTPUT_BAM  output BAM
+# Optional variables (default):
+#   THREADS     samtools threads (PBS_NP, else 16)
 
 module load SAMtools/1.18-GCC-12.3.0
+
+# Strict mode is enabled after the module loads so module scripts are not affected by it.
+set -euo pipefail
+
+REPO_DIR="${REPO_DIR:-${PBS_O_WORKDIR:-$PWD}}"
 : "${INPUT_SAM:?Set INPUT_SAM}"
 : "${OUTPUT_BAM:?Set OUTPUT_BAM}"
-THREADS=${PBS_NP:-16}
-SCRIPT_DIR=${SCRIPT_DIR:?Set SCRIPT_DIR to RNAseq/03_alignment absolute path}
-bash "$SCRIPT_DIR/sam_to_bam.sh" "$INPUT_SAM" "$OUTPUT_BAM" "$THREADS"
+THREADS="${THREADS:-${PBS_NP:-16}}"
+
+bash "$REPO_DIR/RNAseq/03_alignment/sam_to_bam.sh" "$INPUT_SAM" "$OUTPUT_BAM" "$THREADS"

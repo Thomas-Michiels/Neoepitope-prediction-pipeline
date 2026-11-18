@@ -30,7 +30,6 @@ The original PBS scripts requested 48 CPU cores, 60 GB memory, and 72 hours wall
 
 
 ```bash
-SCRIPT="$(pwd)/WGS/01_alignment/bwa_mem_alignment.sh"
 REF="/path/to/hg38.fa"
 R1="/path/to/tumor_R1.fastq.gz"
 R2="/path/to/tumor_R2.fastq.gz"
@@ -38,7 +37,7 @@ SAMPLE="tumor_sample"
 OUT="/path/to/output/tumor.sorted.bam"
 TMP_PREFIX="/path/to/output/tmp/tumor_sort"
 
-qsub -v "SCRIPT=$SCRIPT,REF=$REF,R1=$R1,R2=$R2,SAMPLE=$SAMPLE,OUT=$OUT,TMP_PREFIX=$TMP_PREFIX" WGS/01_alignment/submit_alignment.pbs
+qsub -v "REF=$REF,R1=$R1,R2=$R2,SAMPLE=$SAMPLE,OUT=$OUT,TMP_PREFIX=$TMP_PREFIX" WGS/01_alignment/submit_alignment.pbs
 ```
 
 Repeat the submission with the matched-normal FASTQ files, a distinct sample identifier, output BAM, and temporary prefix.

@@ -4,14 +4,26 @@
 #PBS -l mem=50gb
 #PBS -l walltime=24:00:00
 
-# Paths and parameters used by this job:
-# KALLISTO_INDEX: Path to the Kallisto transcriptome index file
-# R1_FASTQ: Path to the read 1 FASTQ file
-# R2_FASTQ: Path to the read 2 FASTQ file
-# OUTPUT_DIR: Directory for output files
-# SCRIPT_DIR: Directory containing the corresponding analysis .sh script
+# Run from the repository root, or pass REPO_DIR=/path/to/repository with qsub -v.
+#
+# Required variables (qsub -v):
+#   KALLISTO_INDEX  Kallisto transcriptome index
+#   R1_FASTQ        read 1 FASTQ
+#   R2_FASTQ        read 2 FASTQ
+#   OUTPUT_DIR      output directory
+# Optional variables (default):
+#   THREADS         Kallisto threads (PBS_NP, else 18)
 
 module load kallisto/0.51.1-gompi-2023a
-: "${KALLISTO_INDEX:?Set KALLISTO_INDEX}" "${R1_FASTQ:?Set R1_FASTQ}" "${R2_FASTQ:?Set R2_FASTQ}" "${OUTPUT_DIR:?Set OUTPUT_DIR}"
-SCRIPT_DIR="${PBS_O_WORKDIR:-$PWD}/RNAseq/04_expression"
-bash "$SCRIPT_DIR/kallisto_quant.sh" "$KALLISTO_INDEX" "$R1_FASTQ" "$R2_FASTQ" "$OUTPUT_DIR" "${PBS_NP:-18}"
+
+# Strict mode is enabled after the module loads so module scripts are not affected by it.
+set -euo pipefail
+
+REPO_DIR="${REPO_DIR:-${PBS_O_WORKDIR:-$PWD}}"
+: "${KALLISTO_INDEX:?Set KALLISTO_INDEX}"
+: "${R1_FASTQ:?Set R1_FASTQ}"
+: "${R2_FASTQ:?Set R2_FASTQ}"
+: "${OUTPUT_DIR:?Set OUTPUT_DIR}"
+THREADS="${THREADS:-${PBS_NP:-18}}"
+
+bash "$REPO_DIR/RNAseq/04_expression/kallisto_quant.sh" "$KALLISTO_INDEX" "$R1_FASTQ" "$R2_FASTQ" "$OUTPUT_DIR" "$THREADS"

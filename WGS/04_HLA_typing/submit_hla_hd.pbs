@@ -4,26 +4,28 @@
 #PBS -l mem=30gb
 #PBS -l walltime=48:00:00
 
-# Paths and parameters used by this job:
-# SCRIPT: Path to the corresponding analysis .sh script
-# R1: Path to the read 1 FASTQ file
-# R2: Path to the read 2 FASTQ file
-# SAMPLE: Sample identifier used in the output and read groups
-# OUT_DIR: Directory for output files
-# VSC_DATA_VO: HPC environment variable pointing to the VO data directory
-# HLAHD_ROOT: Path to the HLA-HD installation directory
-# THREADS: Number of CPU threads to use
+# Run from the repository root, or pass REPO_DIR=/path/to/repository with qsub -v.
+#
+# Required variables (qsub -v):
+#   R1          read 1 FASTQ
+#   R2          read 2 FASTQ
+#   SAMPLE      sample identifier
+#   OUT_DIR     output directory
+# Optional variables (default):
+#   HLAHD_ROOT  HLA-HD installation directory ($VSC_DATA_VO/Shared_Software/hlahd.1.7.0)
+#   THREADS     HLA-HD threads (PBS_NP, else 18)
 
 module load Bowtie2/2.5.4-GCC-13.2.0
 
-: "${SCRIPT:?Set SCRIPT}"
+# Strict mode is enabled after the module loads so module scripts are not affected by it.
+set -euo pipefail
+
+REPO_DIR="${REPO_DIR:-${PBS_O_WORKDIR:-$PWD}}"
 : "${R1:?Set R1}"
 : "${R2:?Set R2}"
 : "${SAMPLE:?Set SAMPLE}"
 : "${OUT_DIR:?Set OUT_DIR}"
-: "${VSC_DATA_VO:?VSC_DATA_VO must be available on the HPC}"
-
-HLAHD_ROOT="${HLAHD_ROOT:-$VSC_DATA_VO/Shared_Software/hlahd.1.7.0}"
+HLAHD_ROOT="${HLAHD_ROOT:-${VSC_DATA_VO:?VSC_DATA_VO must be set}/Shared_Software/hlahd.1.7.0}"
 THREADS="${THREADS:-${PBS_NP:-18}}"
 
-bash "$SCRIPT" "$R1" "$R2" "$SAMPLE" "$OUT_DIR" "$HLAHD_ROOT" "$THREADS"
+bash "$REPO_DIR/WGS/04_HLA_typing/hla_hd.sh" "$R1" "$R2" "$SAMPLE" "$OUT_DIR" "$HLAHD_ROOT" "$THREADS"

@@ -4,19 +4,26 @@
 #PBS -l mem=20gb
 #PBS -l walltime=24:00:00
 
-# Paths and parameters used by this job:
-# SCRIPT: Path to the corresponding analysis .sh script
-# R1: Path to the read 1 FASTQ file
-# R2: Path to the read 2 FASTQ file
-# OUT_R1: Path for the output read 1 FASTQ file
-# OUT_R2: Path for the output read 2 FASTQ file
-# BC_PATTERN: UMI-tools barcode pattern for UMI extraction
+# Run from the repository root, or pass REPO_DIR=/path/to/repository with qsub -v.
+#
+# Required variables (qsub -v):
+#   R1          read 1 FASTQ
+#   R2          read 2 FASTQ
+#   OUT_R1      output read 1 FASTQ
+#   OUT_R2      output read 2 FASTQ
+# Optional variables (default):
+#   BC_PATTERN  UMI-tools barcode pattern, read from original Read 2 (NNNNNNNNXXXXXX)
 
 module load UMI-tools/1.1.4-foss-2023a
-: "${SCRIPT:?Set SCRIPT}"
+
+# Strict mode is enabled after the module loads so module scripts are not affected by it.
+set -euo pipefail
+
+REPO_DIR="${REPO_DIR:-${PBS_O_WORKDIR:-$PWD}}"
 : "${R1:?Set R1}"
 : "${R2:?Set R2}"
 : "${OUT_R1:?Set OUT_R1}"
 : "${OUT_R2:?Set OUT_R2}"
+BC_PATTERN="${BC_PATTERN:-NNNNNNNNXXXXXX}"
 
-bash "$SCRIPT" "$R1" "$R2" "$OUT_R1" "$OUT_R2" "${BC_PATTERN:-NNNNNNNNXXXXXX}"
+bash "$REPO_DIR/RNAseq/01_preprocessing/umi_extraction_read2.sh" "$R1" "$R2" "$OUT_R1" "$OUT_R2" "$BC_PATTERN"

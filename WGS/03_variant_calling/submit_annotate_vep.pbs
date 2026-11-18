@@ -4,15 +4,28 @@
 #PBS -l mem=30gb
 #PBS -l walltime=24:00:00
 
-# Paths and parameters used by this job:
-# SCRIPT: Path to the corresponding analysis .sh script
-# INPUT_VCF: Path to the input VCF file
-# OUT: Output file path or output prefix, depending on the analysis script
-# STATS: Path for the annotation statistics report
-# CACHE_DIR: Path to the local VEP cache directory
-# REF: Path to the reference genome FASTA file
-# FORKS: Number of VEP parallel forks
+# Run from the repository root, or pass REPO_DIR=/path/to/repository with qsub -v.
+#
+# Required variables (qsub -v):
+#   INPUT_VCF  PASS-only VCF
+#   OUT        output annotated VCF (.vcf.gz)
+#   STATS      output VEP statistics HTML
+#   CACHE_DIR  VEP merged cache directory
+#   REF        GRCh38 FASTA
+# Optional variables (default):
+#   FORKS      number of VEP forks (PBS_NP, else 16)
 
 module load VEP/113.0-GCC-12.3.0
-: "${SCRIPT:?Set SCRIPT}" "${INPUT_VCF:?Set INPUT_VCF}" "${OUT:?Set OUT}" "${STATS:?Set STATS}" "${CACHE_DIR:?Set CACHE_DIR}" "${REF:?Set REF}"
-bash "$SCRIPT" "$INPUT_VCF" "$OUT" "$STATS" "$CACHE_DIR" "$REF" "${FORKS:-16}"
+
+# Strict mode is enabled after the module loads so module scripts are not affected by it.
+set -euo pipefail
+
+REPO_DIR="${REPO_DIR:-${PBS_O_WORKDIR:-$PWD}}"
+: "${INPUT_VCF:?Set INPUT_VCF}"
+: "${OUT:?Set OUT}"
+: "${STATS:?Set STATS}"
+: "${CACHE_DIR:?Set CACHE_DIR}"
+: "${REF:?Set REF}"
+FORKS="${FORKS:-${PBS_NP:-16}}"
+
+bash "$REPO_DIR/WGS/03_variant_calling/annotate_vep.sh" "$INPUT_VCF" "$OUT" "$STATS" "$CACHE_DIR" "$REF" "$FORKS"

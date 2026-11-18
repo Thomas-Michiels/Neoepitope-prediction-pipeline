@@ -4,20 +4,27 @@
 #PBS -l mem=40gb
 #PBS -l walltime=72:00:00
 
-# Paths and parameters used by this job:
-# R1: Path to the read 1 FASTQ file
-# R2: Path to the read 2 FASTQ file
-# HISAT2_INDEX: Path to the HISAT2 genome index prefix (not an individual .ht2 file)
-# SPLICE_SITES: Path to the HISAT2 known splice sites file
-# OUT_PREFIX: Output file prefix for HISAT2 alignment
-# RG_ID: Read group identifier
-# SAMPLE: Sample identifier used in the output and read groups
-# THREADS: Number of CPU threads to use
-# SCRIPT_DIR: Directory containing the corresponding analysis .sh script
-# LIBRARY: Sequencing library name for read group metadata
-# PLATFORM_UNIT: Sequencing platform unit for read group metadata
+# Run from the repository root, or pass REPO_DIR=/path/to/repository with qsub -v.
+#
+# Required variables (qsub -v):
+#   R1             read 1 FASTQ
+#   R2             read 2 FASTQ
+#   HISAT2_INDEX   HISAT2 genome index prefix (not a .ht2 file)
+#   SPLICE_SITES   HISAT2 known splice sites file
+#   OUT_PREFIX     output prefix
+#   RG_ID          read-group ID
+#   SAMPLE         read-group SM
+# Optional variables (default):
+#   THREADS        HISAT2 threads (PBS_NP, else 48)
+#   LIBRARY        read-group LB (SMARTer_Total_RNA_Mammalian_Pico_Input)
+#   PLATFORM_UNIT  read-group PU (NovaSeqX)
 
 module load HISAT2/2.2.1-gompi-2023a
+
+# Strict mode is enabled after the module loads so module scripts are not affected by it.
+set -euo pipefail
+
+REPO_DIR="${REPO_DIR:-${PBS_O_WORKDIR:-$PWD}}"
 : "${R1:?Set R1}"
 : "${R2:?Set R2}"
 : "${HISAT2_INDEX:?Set HISAT2_INDEX}"
@@ -25,6 +32,8 @@ module load HISAT2/2.2.1-gompi-2023a
 : "${OUT_PREFIX:?Set OUT_PREFIX}"
 : "${RG_ID:?Set RG_ID}"
 : "${SAMPLE:?Set SAMPLE}"
-THREADS=${PBS_NP:-48}
-SCRIPT_DIR=${SCRIPT_DIR:?Set SCRIPT_DIR to RNAseq/03_alignment absolute path}
-bash "$SCRIPT_DIR/hisat2_alignment.sh" "$R1" "$R2" "$HISAT2_INDEX" "$SPLICE_SITES" "$OUT_PREFIX" "$THREADS" "$RG_ID" "$SAMPLE" "${LIBRARY:-SMARTer_Total_RNA_Mammalian_Pico_Input}" "${PLATFORM_UNIT:-NovaSeqX}"
+THREADS="${THREADS:-${PBS_NP:-48}}"
+LIBRARY="${LIBRARY:-SMARTer_Total_RNA_Mammalian_Pico_Input}"
+PLATFORM_UNIT="${PLATFORM_UNIT:-NovaSeqX}"
+
+bash "$REPO_DIR/RNAseq/03_alignment/hisat2_alignment.sh" "$R1" "$R2" "$HISAT2_INDEX" "$SPLICE_SITES" "$OUT_PREFIX" "$THREADS" "$RG_ID" "$SAMPLE" "$LIBRARY" "$PLATFORM_UNIT"

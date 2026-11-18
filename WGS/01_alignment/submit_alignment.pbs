@@ -1,22 +1,36 @@
 #!/bin/bash -l
-
 #PBS -N WGS_BWA_MEM_Alignment
 #PBS -l nodes=1:ppn=48
 #PBS -l mem=60gb
 #PBS -l walltime=72:00:00
 
-# Paths and parameters used by this job:
-# SCRIPT: Path to the corresponding analysis .sh script
-# REF: Path to the reference genome FASTA file
-# R1: Path to the read 1 FASTQ file
-# R2: Path to the read 2 FASTQ file
-# SAMPLE: Sample identifier used in the output and read groups
-# OUT: Output file path or output prefix, depending on the analysis script
-# TMP_PREFIX: Prefix for temporary files
-# BWA_THREADS: Number of threads for BWA-MEM alignment
-# SORT_THREADS: Number of threads for BAM sorting
+# Run from the repository root, or pass REPO_DIR=/path/to/repository with qsub -v.
+#
+# Required variables (qsub -v):
+#   REF           BWA-indexed GRCh38 FASTA
+#   R1            read 1 FASTQ
+#   R2            read 2 FASTQ
+#   SAMPLE        sample identifier (read-group ID and SM)
+#   OUT           output sorted BAM
+#   TMP_PREFIX    prefix for samtools sort temporary files
+# Optional variables (default):
+#   BWA_THREADS   threads for BWA-MEM (PBS_NP, else 48)
+#   SORT_THREADS  threads for samtools sort (PBS_NP, else 48)
 
 module load BWA/0.7.18-GCCcore-13.2.0
 module load SAMtools/1.19.2-GCC-13.2.0
 
-bash "$SCRIPT" "$REF" "$R1" "$R2" "$SAMPLE" "$OUT" "$TMP_PREFIX" "${BWA_THREADS:-48}" "${SORT_THREADS:-48}"
+# Strict mode is enabled after the module loads so module scripts are not affected by it.
+set -euo pipefail
+
+REPO_DIR="${REPO_DIR:-${PBS_O_WORKDIR:-$PWD}}"
+: "${REF:?Set REF}"
+: "${R1:?Set R1}"
+: "${R2:?Set R2}"
+: "${SAMPLE:?Set SAMPLE}"
+: "${OUT:?Set OUT}"
+: "${TMP_PREFIX:?Set TMP_PREFIX}"
+BWA_THREADS="${BWA_THREADS:-${PBS_NP:-48}}"
+SORT_THREADS="${SORT_THREADS:-${PBS_NP:-48}}"
+
+bash "$REPO_DIR/WGS/01_alignment/bwa_mem_alignment.sh" "$REF" "$R1" "$R2" "$SAMPLE" "$OUT" "$TMP_PREFIX" "$BWA_THREADS" "$SORT_THREADS"

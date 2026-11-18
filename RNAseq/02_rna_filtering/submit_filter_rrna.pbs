@@ -5,20 +5,28 @@
 #PBS -l walltime=72:00:00
 #PBS -j oe
 
-# Paths and parameters used by this job:
-# R1: Path to the read 1 FASTQ file
-# R2: Path to the read 2 FASTQ file
-# OUT: Output file path or output prefix, depending on the analysis script
-# INDEX: Path to the HISAT2 RNA-filter index prefix
-# THREADS: Number of CPU threads to use
-# SCRIPT_DIR: Directory containing the corresponding analysis .sh script
+# Run from the repository root, or pass REPO_DIR=/path/to/repository with qsub -v.
+#
+# Required variables (qsub -v):
+#   R1       read 1 FASTQ
+#   R2       read 2 FASTQ
+#   OUT      output prefix for reads that pass the filter
+# Optional variables (default):
+#   INDEX    HISAT2 rRNA index prefix ($VSC_DATA_VO/genomes/Hsapiens/rRNA/hisat2/hsa_rRNA.index)
+#   THREADS  HISAT2 threads (PBS_NP, else 48)
+#   SAM      SAM output of filtered-out reads (/dev/null)
 
 module load HISAT2/2.2.1-gompi-2023a
+
+# Strict mode is enabled after the module loads so module scripts are not affected by it.
+set -euo pipefail
+
+REPO_DIR="${REPO_DIR:-${PBS_O_WORKDIR:-$PWD}}"
 : "${R1:?Set R1}"
 : "${R2:?Set R2}"
-: "${OUT:?Set OUT (output prefix)}"
-INDEX=${INDEX:-$VSC_DATA_VO/genomes/Hsapiens/rRNA/hisat2/hsa_rRNA.index}
-THREADS=${THREADS:-48}
-SAM=${SAM:-/dev/null}
-SCRIPT_DIR=${PBS_O_WORKDIR:-$(pwd)}
-bash "$SCRIPT_DIR/RNAseq/02_rna_filtering/filter_rrna.sh" "$R1" "$R2" "$INDEX" "$OUT" "$THREADS" "$SAM"
+: "${OUT:?Set OUT}"
+INDEX="${INDEX:-${VSC_DATA_VO:?VSC_DATA_VO must be set}/genomes/Hsapiens/rRNA/hisat2/hsa_rRNA.index}"
+THREADS="${THREADS:-${PBS_NP:-48}}"
+SAM="${SAM:-/dev/null}"
+
+bash "$REPO_DIR/RNAseq/02_rna_filtering/filter_ncrna.sh" "$R1" "$R2" "$INDEX" "$OUT" "$THREADS" "$SAM"

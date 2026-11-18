@@ -4,18 +4,33 @@
 #PBS -l mem=60gb
 #PBS -l walltime=48:00:00
 
-# Paths and parameters used by this job:
-# SCRIPT: Path to the corresponding analysis .sh script
-# INPUT_BAM: Path to the input BAM file
-# REF: Path to the reference genome FASTA file
-# MILLS: Path to the Mills known indels VCF
-# SNPS: Path to the known SNP sites VCF
-# DBSNP: Path to the dbSNP VCF
-# TABLE: Path for the BQSR recalibration table
-# OUT: Output file path or output prefix, depending on the analysis script
-# JAVA_HEAP: Java heap allocation (for example 56g)
+# Run from the repository root, or pass REPO_DIR=/path/to/repository with qsub -v.
+#
+# Required variables (qsub -v):
+#   INPUT_BAM  duplicate-marked BAM
+#   REF        GRCh38 FASTA
+#   MILLS      Mills and 1000G gold standard indels VCF
+#   SNPS       1000G high-confidence SNPs VCF
+#   DBSNP      dbSNP VCF
+#   TABLE      output recalibration table
+#   OUT        output recalibrated BAM
+# Optional variables (default):
+#   JAVA_HEAP  Java heap for BaseRecalibrator (4g)
 
 module load SAMtools/1.19.2-GCC-13.2.0
 module load GATK/4.6.0.0-GCCcore-13.2.0-Java-17
-cd "$PBS_O_WORKDIR"
-bash "$SCRIPT" "$INPUT_BAM" "$REF" "$MILLS" "$SNPS" "$DBSNP" "$TABLE" "$OUT" "${JAVA_HEAP:-4g}"
+
+# Strict mode is enabled after the module loads so module scripts are not affected by it.
+set -euo pipefail
+
+REPO_DIR="${REPO_DIR:-${PBS_O_WORKDIR:-$PWD}}"
+: "${INPUT_BAM:?Set INPUT_BAM}"
+: "${REF:?Set REF}"
+: "${MILLS:?Set MILLS}"
+: "${SNPS:?Set SNPS}"
+: "${DBSNP:?Set DBSNP}"
+: "${TABLE:?Set TABLE}"
+: "${OUT:?Set OUT}"
+JAVA_HEAP="${JAVA_HEAP:-4g}"
+
+bash "$REPO_DIR/WGS/02_preprocessing/bqsr.sh" "$INPUT_BAM" "$REF" "$MILLS" "$SNPS" "$DBSNP" "$TABLE" "$OUT" "$JAVA_HEAP"

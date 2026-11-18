@@ -4,25 +4,35 @@
 #PBS -l mem=60gb
 #PBS -l walltime=24:00:00
 
-# Paths and parameters used by this job:
-# R1: Path to the read 1 FASTQ file
-# R2: Path to the read 2 FASTQ file
-# BWA_REFERENCE: Path to the BWA-indexed reference genome FASTA file
-# OUTPUT_BAM: Path for the output BAM file
-# RG_ID: Read group identifier
-# SAMPLE: Sample identifier used in the output and read groups
-# THREADS: Number of CPU threads to use
-# SCRIPT_DIR: Directory containing the corresponding analysis .sh script
-# LIBRARY: Sequencing library name for read group metadata
-# PLATFORM_UNIT: Sequencing platform unit for read group metadata
+# Run from the repository root, or pass REPO_DIR=/path/to/repository with qsub -v.
+#
+# Required variables (qsub -v):
+#   R1             HISAT2-unmapped read 1 FASTQ
+#   R2             HISAT2-unmapped read 2 FASTQ
+#   BWA_REFERENCE  BWA-indexed genome FASTA
+#   OUTPUT_BAM     output BAM
+#   RG_ID          read-group ID
+#   SAMPLE         read-group SM
+# Optional variables (default):
+#   THREADS        BWA threads (PBS_NP, else 48)
+#   LIBRARY        read-group LB (SMARTer_Total_RNA_Mammalian_Pico_Input)
+#   PLATFORM_UNIT  read-group PU (NovaSeqX)
 
-module load BWA/0.7.17-GCCcore-12.3.0 SAMtools/1.18-GCC-12.3.0
+module load BWA/0.7.17-GCCcore-12.3.0
+module load SAMtools/1.18-GCC-12.3.0
+
+# Strict mode is enabled after the module loads so module scripts are not affected by it.
+set -euo pipefail
+
+REPO_DIR="${REPO_DIR:-${PBS_O_WORKDIR:-$PWD}}"
 : "${R1:?Set R1}"
 : "${R2:?Set R2}"
 : "${BWA_REFERENCE:?Set BWA_REFERENCE}"
 : "${OUTPUT_BAM:?Set OUTPUT_BAM}"
 : "${RG_ID:?Set RG_ID}"
 : "${SAMPLE:?Set SAMPLE}"
-THREADS=${PBS_NP:-48}
-SCRIPT_DIR=${SCRIPT_DIR:?Set SCRIPT_DIR to RNAseq/03_alignment absolute path}
-bash "$SCRIPT_DIR/bwa_mem_alignment.sh" "$R1" "$R2" "$BWA_REFERENCE" "$OUTPUT_BAM" "$THREADS" "$RG_ID" "$SAMPLE" "${LIBRARY:-SMARTer_Total_RNA_Mammalian_Pico_Input}" "${PLATFORM_UNIT:-NovaSeqX}"
+THREADS="${THREADS:-${PBS_NP:-48}}"
+LIBRARY="${LIBRARY:-SMARTer_Total_RNA_Mammalian_Pico_Input}"
+PLATFORM_UNIT="${PLATFORM_UNIT:-NovaSeqX}"
+
+bash "$REPO_DIR/RNAseq/03_alignment/bwa_mem_alignment.sh" "$R1" "$R2" "$BWA_REFERENCE" "$OUTPUT_BAM" "$THREADS" "$RG_ID" "$SAMPLE" "$LIBRARY" "$PLATFORM_UNIT"
