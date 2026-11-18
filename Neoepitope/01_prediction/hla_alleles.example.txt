@@ -1,0 +1,4 @@
+# One HLA class I allele per line, in netMHCpan notation.
+# Take the alleles from the HLA-HD result: <OUT_DIR>/<SAMPLE>/result/<SAMPLE>_final.result.txt
+HLA-A02:01
+HLA-B07:02

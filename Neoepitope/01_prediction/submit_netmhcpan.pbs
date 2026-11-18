@@ -1,0 +1,28 @@
+#!/bin/bash -l
+#PBS -N netMHCpan
+#PBS -l nodes=1:ppn=1
+#PBS -l mem=30gb
+#PBS -l walltime=24:00:00
+
+# Run from the repository root, or pass REPO_DIR=/path/to/repository with qsub -v.
+#
+# Required variables (qsub -v):
+#   PEPTIDE_FASTA   peptide FASTA
+#   HLA_FILE        text file with one HLA allele per line, e.g. HLA-A02:01
+#   OUTPUT_FILE     output .xls file
+# Optional variables (default):
+#   PEPTIDE_LENGTH  peptide length(s) without commas (9)
+#   NETMHCPAN_BIN   netMHCpan executable (netMHCpan)
+
+set -euo pipefail
+
+REPO_DIR="${REPO_DIR:-${PBS_O_WORKDIR:-$PWD}}"
+: "${PEPTIDE_FASTA:?Set PEPTIDE_FASTA}"
+: "${HLA_FILE:?Set HLA_FILE}"
+: "${OUTPUT_FILE:?Set OUTPUT_FILE}"
+PEPTIDE_LENGTH="${PEPTIDE_LENGTH:-9}"
+NETMHCPAN_BIN="${NETMHCPAN_BIN:-netMHCpan}"
+
+HLA=$(grep -v '^[[:space:]]*\(#\|$\)' "$HLA_FILE" | paste -sd, -)
+
+bash "$REPO_DIR/Neoepitope/01_prediction/netmhcpan.sh" "$PEPTIDE_FASTA" "$HLA" "$PEPTIDE_LENGTH" "$OUTPUT_FILE" "$NETMHCPAN_BIN"
