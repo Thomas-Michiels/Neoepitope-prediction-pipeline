@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
 hisat=$1; bwa=$2; out=$3; threads=$4
 mkdir -p "$(dirname "$out")"

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
 : "${PEPTIDE_FASTA:?Missing PEPTIDE_FASTA}"
 : "${HLA:?Missing HLA}"

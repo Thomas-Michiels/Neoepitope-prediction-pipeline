@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 
 # WGS alignment: run separately for tumor and matched normal samples.
 

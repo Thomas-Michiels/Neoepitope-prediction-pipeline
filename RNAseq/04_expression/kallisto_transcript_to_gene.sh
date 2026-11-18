@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
 RSCRIPT="$1"
 GTF="$2"

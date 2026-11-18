@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
 r1=$1; r2=$2; ref=$3; out=$4; threads=$5; rg=$6; sample=$7; library=${8:-SMARTer_Total_RNA_Mammalian_Pico_Input}; pu=${9:-NovaSeqX}
 mkdir -p "$(dirname "$out")"

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
 : "${MUPEXI_SCRIPT:?Missing MUPEXI_SCRIPT}"
 : "${VCF:?Missing VCF}"
