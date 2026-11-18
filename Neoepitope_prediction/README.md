@@ -2,9 +2,9 @@
 
 This module combines the outputs of the WGS and RNA-seq workflows:
 
-- PASS-filtered somatic VCF from `WGS/03_variant_calling`
-- HLA alleles from `WGS/04_HLA_typing`
-- transcript expression (Kallisto `abundance.tsv`) from `RNAseq/04_expression`
+- PASS-filtered somatic VCF from `WGS_analysis/03_variant_calling`
+- HLA alleles from `WGS_analysis/04_HLA_typing`
+- transcript expression (Kallisto `abundance.tsv`) from `RNAseq_analysis/04_expression`
 
 ## Files
 
@@ -32,14 +32,14 @@ MuPeXI: 48 CPUs, 30 GB, 24 h. netMHCpan: 1 CPU, 30 GB, 24 h.
 Run from the repository root:
 
 ```bash
-qsub -v "VCF=/path/mutect2.filtered.PASS.vcf,HLA_FILE=/path/hla_alleles.txt,EXPRESSION_TSV=/path/kallisto/abundance.tsv,OUTPUT_DIR=/path/mupexi,SAMPLE_NAME=patient01,MUPEXI_SCRIPT=/path/MuPeXI.py,MUPEXI_CONFIG=/path/config.ini,PEPTIDE_LENGTH=8-11" Neoepitope/01_prediction/submit_mupexi.pbs
+qsub -v "VCF=/path/mutect2.filtered.PASS.vcf,HLA_FILE=/path/hla_alleles.txt,EXPRESSION_TSV=/path/kallisto/abundance.tsv,OUTPUT_DIR=/path/mupexi,SAMPLE_NAME=patient01,MUPEXI_SCRIPT=/path/MuPeXI.py,MUPEXI_CONFIG=/path/config.ini,PEPTIDE_LENGTH=8-11" Neoepitope_prediction/submit_mupexi.pbs
 
-qsub -v "PEPTIDE_FASTA=/path/peptides_9mer.fasta,HLA_FILE=/path/hla_alleles.txt,OUTPUT_FILE=/path/netmhcpan/patient01_9mer.xls" Neoepitope/01_prediction/submit_netmhcpan.pbs
+qsub -v "PEPTIDE_FASTA=/path/peptides_9mer.fasta,HLA_FILE=/path/hla_alleles.txt,OUTPUT_FILE=/path/netmhcpan/patient01_9mer.xls" Neoepitope_prediction/submit_netmhcpan.pbs
 ```
 
 ## Run without PBS
 
 ```bash
-bash Neoepitope/01_prediction/mupexi.sh /path/PASS.vcf HLA-A02:01,HLA-B07:02 9 /path/abundance.tsv /path/mupexi patient01 /path/MuPeXI.py /path/config.ini 8
-bash Neoepitope/01_prediction/netmhcpan.sh /path/peptides.fasta HLA-A02:01,HLA-B07:02 9 /path/out.xls
+bash Neoepitope_prediction/mupexi.sh /path/PASS.vcf HLA-A02:01,HLA-B07:02 9 /path/abundance.tsv /path/mupexi patient01 /path/MuPeXI.py /path/config.ini 8
+bash Neoepitope_prediction/netmhcpan.sh /path/peptides.fasta HLA-A02:01,HLA-B07:02 9 /path/out.xls
 ```

@@ -39,7 +39,7 @@ OUT_R1="/path/to/sample_R1_UMI_extracted.fastq.gz"
 OUT_R2="/path/to/sample_R2_UMI_extracted.fastq.gz"
 BC_PATTERN="NNNNNNNNXXXXXX"
 
-qsub -v "R1=$R1,R2=$R2,OUT_R1=$OUT_R1,OUT_R2=$OUT_R2,BC_PATTERN=$BC_PATTERN" RNAseq/01_preprocessing/submit_umi_extraction_read2.pbs
+qsub -v "R1=$R1,R2=$R2,OUT_R1=$OUT_R1,OUT_R2=$OUT_R2,BC_PATTERN=$BC_PATTERN" RNAseq_analysis/01_preprocessing/submit_umi_extraction_read2.pbs
 ```
 
 For UMIs on Read 1, use `submit_umi_extraction_read1.pbs` with the same variables.
@@ -51,7 +51,7 @@ To define a cell barcode, adapt the pattern to the actual library design, for ex
 With UMI-tools available in the environment:
 
 ```bash
-bash RNAseq/01_preprocessing/umi_extraction_read2.sh \
+bash RNAseq_analysis/01_preprocessing/umi_extraction_read2.sh \
     /path/to/sample_R1.fastq.gz \
     /path/to/sample_R2.fastq.gz \
     /path/to/output_R1.fastq.gz \

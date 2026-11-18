@@ -11,7 +11,7 @@
 #   ABUNDANCE_TSV      Kallisto abundance.tsv
 #   GENE_OUTPUT_TSV    output gene-level TSV
 # Optional variables (default):
-#   TXIMPORT_R_SCRIPT  tximport R script ($REPO_DIR/RNAseq/04_expression/kallisto_gene_matrix_tximport_2.R)
+#   TXIMPORT_R_SCRIPT  tximport R script ($REPO_DIR/RNAseq_analysis/04_expression/kallisto_gene_matrix_tximport_2.R)
 
 module load R/4.5.1-gfbf-2025a
 module load R-bundle-Bioconductor/3.22-foss-2025a-R-4.5.1
@@ -24,6 +24,6 @@ REPO_DIR="${REPO_DIR:-${PBS_O_WORKDIR:-$PWD}}"
 : "${GTF_FILE:?Set GTF_FILE}"
 : "${ABUNDANCE_TSV:?Set ABUNDANCE_TSV}"
 : "${GENE_OUTPUT_TSV:?Set GENE_OUTPUT_TSV}"
-TXIMPORT_R_SCRIPT="${TXIMPORT_R_SCRIPT:-$REPO_DIR/RNAseq/04_expression/kallisto_gene_matrix_tximport_2.R}"
+TXIMPORT_R_SCRIPT="${TXIMPORT_R_SCRIPT:-$REPO_DIR/RNAseq_analysis/04_expression/kallisto_gene_matrix_tximport_2.R}"
 
-bash "$REPO_DIR/RNAseq/04_expression/kallisto_transcript_to_gene.sh" "$TXIMPORT_R_SCRIPT" "$GTF_FILE" "$ABUNDANCE_TSV" "$GENE_OUTPUT_TSV"
+bash "$REPO_DIR/RNAseq_analysis/04_expression/kallisto_transcript_to_gene.sh" "$TXIMPORT_R_SCRIPT" "$GTF_FILE" "$ABUNDANCE_TSV" "$GENE_OUTPUT_TSV"

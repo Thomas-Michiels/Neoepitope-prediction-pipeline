@@ -22,4 +22,4 @@ REPO_DIR="${REPO_DIR:-${PBS_O_WORKDIR:-$PWD}}"
 : "${OUTPUT_BAM:?Set OUTPUT_BAM}"
 THREADS="${THREADS:-${PBS_NP:-16}}"
 
-bash "$REPO_DIR/RNAseq/03_alignment/sam_to_bam.sh" "$INPUT_SAM" "$OUTPUT_BAM" "$THREADS"
+bash "$REPO_DIR/RNAseq_analysis/03_alignment/sam_to_bam.sh" "$INPUT_SAM" "$OUTPUT_BAM" "$THREADS"

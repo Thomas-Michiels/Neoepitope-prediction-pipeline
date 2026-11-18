@@ -22,11 +22,11 @@ Inputs: paired FASTQ files (`R1`, `R2`) and an output directory (`OUT_DIR`). Out
 ## Submit with qsub
 
 ```bash
-qsub -v "R1=/path/sample_R1.fastq.gz,R2=/path/sample_R2.fastq.gz,OUT_DIR=/path/output/fastqc/sample" QC/01_fastqc/submit_fastqc.pbs
+qsub -v "R1=/path/sample_R1.fastq.gz,R2=/path/sample_R2.fastq.gz,OUT_DIR=/path/output/fastqc/sample" QC/submit_fastqc.pbs
 ```
 
 ## Run without PBS
 
 ```bash
-bash QC/01_fastqc/fastqc.sh /path/sample_R1.fastq.gz /path/sample_R2.fastq.gz /path/output/fastqc/sample 2
+bash QC/fastqc.sh /path/sample_R1.fastq.gz /path/sample_R2.fastq.gz /path/output/fastqc/sample 2
 ```

@@ -28,4 +28,4 @@ REPO_DIR="${REPO_DIR:-${PBS_O_WORKDIR:-$PWD}}"
 MIN_BQ="${MIN_BQ:-2}"
 MIN_MQ="${MIN_MQ:-10}"
 
-bash "$REPO_DIR/RNAseq/05_allele_specific_expression/ase_readcounter.sh" "$REF" "$BAM" "$VCF" "$OUT" "$MIN_BQ" "$MIN_MQ"
+bash "$REPO_DIR/RNAseq_analysis/05_allele_specific_expression/ase_readcounter.sh" "$REF" "$BAM" "$VCF" "$OUT" "$MIN_BQ" "$MIN_MQ"

@@ -33,4 +33,4 @@ REPO_DIR="${REPO_DIR:-${PBS_O_WORKDIR:-$PWD}}"
 BWA_THREADS="${BWA_THREADS:-${PBS_NP:-48}}"
 SORT_THREADS="${SORT_THREADS:-${PBS_NP:-48}}"
 
-bash "$REPO_DIR/WGS/01_alignment/bwa_mem_alignment.sh" "$REF" "$R1" "$R2" "$SAMPLE" "$OUT" "$TMP_PREFIX" "$BWA_THREADS" "$SORT_THREADS"
+bash "$REPO_DIR/WGS_analysis/01_alignment/bwa_mem_alignment.sh" "$REF" "$R1" "$R2" "$SAMPLE" "$OUT" "$TMP_PREFIX" "$BWA_THREADS" "$SORT_THREADS"

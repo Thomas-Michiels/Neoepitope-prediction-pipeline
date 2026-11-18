@@ -26,4 +26,4 @@ REPO_DIR="${REPO_DIR:-${PBS_O_WORKDIR:-$PWD}}"
 : "${OUTPUT_DIR:?Set OUTPUT_DIR}"
 THREADS="${THREADS:-${PBS_NP:-18}}"
 
-bash "$REPO_DIR/RNAseq/04_expression/kallisto_quant.sh" "$KALLISTO_INDEX" "$R1_FASTQ" "$R2_FASTQ" "$OUTPUT_DIR" "$THREADS"
+bash "$REPO_DIR/RNAseq_analysis/04_expression/kallisto_quant.sh" "$KALLISTO_INDEX" "$R1_FASTQ" "$R2_FASTQ" "$OUTPUT_DIR" "$THREADS"

@@ -29,4 +29,4 @@ INDEX="${INDEX:-${VSC_DATA_VO:?VSC_DATA_VO must be set}/genomes/Hsapiens/sn-o-RN
 THREADS="${THREADS:-${PBS_NP:-48}}"
 SAM="${SAM:-/dev/null}"
 
-bash "$REPO_DIR/RNAseq/02_rna_filtering/filter_ncrna.sh" "$R1" "$R2" "$INDEX" "$OUT" "$THREADS" "$SAM"
+bash "$REPO_DIR/RNAseq_analysis/02_rna_filtering/filter_ncrna.sh" "$R1" "$R2" "$INDEX" "$OUT" "$THREADS" "$SAM"

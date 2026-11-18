@@ -26,4 +26,4 @@ REPO_DIR="${REPO_DIR:-${PBS_O_WORKDIR:-$PWD}}"
 : "${OUT_R2:?Set OUT_R2}"
 BC_PATTERN="${BC_PATTERN:-NNNNNNNNXXXXXX}"
 
-bash "$REPO_DIR/RNAseq/01_preprocessing/umi_extraction_read2.sh" "$R1" "$R2" "$OUT_R1" "$OUT_R2" "$BC_PATTERN"
+bash "$REPO_DIR/RNAseq_analysis/01_preprocessing/umi_extraction_read2.sh" "$R1" "$R2" "$OUT_R1" "$OUT_R2" "$BC_PATTERN"

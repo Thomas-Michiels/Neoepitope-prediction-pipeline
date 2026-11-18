@@ -25,4 +25,4 @@ REPO_DIR="${REPO_DIR:-${PBS_O_WORKDIR:-$PWD}}"
 : "${TMP_PREFIX:?Set TMP_PREFIX}"
 THREADS="${THREADS:-${PBS_NP:-1}}"
 
-bash "$REPO_DIR/WGS/02_preprocessing/mark_duplicates.sh" "$INPUT_BAM" "$OUT" "$TMP_PREFIX" "$THREADS"
+bash "$REPO_DIR/WGS_analysis/02_preprocessing/mark_duplicates.sh" "$INPUT_BAM" "$OUT" "$TMP_PREFIX" "$THREADS"

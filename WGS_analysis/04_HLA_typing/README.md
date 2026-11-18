@@ -36,7 +36,7 @@ R2="/path/to/normal_R2.fastq.gz"
 SAMPLE="normal_sample"
 OUT_DIR="/path/to/output/HLA"
 
-qsub -v "R1=$R1,R2=$R2,SAMPLE=$SAMPLE,OUT_DIR=$OUT_DIR" WGS/04_HLA_typing/submit_hla_hd.pbs
+qsub -v "R1=$R1,R2=$R2,SAMPLE=$SAMPLE,OUT_DIR=$OUT_DIR" WGS_analysis/04_HLA_typing/submit_hla_hd.pbs
 ```
 
 Repeat with tumor FASTQs and a distinct `SAMPLE` and `OUT_DIR` if tumor HLA typing is also required. The wrapper uses 18 threads by default. To override, add `THREADS=12` to the `qsub -v` string. To specify another installation, add `HLAHD_ROOT=/path/to/hlahd.1.7.0`.
@@ -46,7 +46,7 @@ Repeat with tumor FASTQs and a distinct `SAMPLE` and `OUT_DIR` if tumor HLA typi
 With Bowtie2 and HLA-HD dependencies available in the environment:
 
 ```bash
-bash WGS/04_HLA_typing/hla_hd.sh \
+bash WGS_analysis/04_HLA_typing/hla_hd.sh \
     /path/to/normal_R1.fastq.gz \
     /path/to/normal_R2.fastq.gz \
     normal_sample \

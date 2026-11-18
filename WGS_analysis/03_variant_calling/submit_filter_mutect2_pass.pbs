@@ -24,4 +24,4 @@ REPO_DIR="${REPO_DIR:-${PBS_O_WORKDIR:-$PWD}}"
 : "${FILTERED_VCF:?Set FILTERED_VCF}"
 : "${PASS_VCF:?Set PASS_VCF}"
 
-bash "$REPO_DIR/WGS/03_variant_calling/filter_mutect2_pass.sh" "$REF" "$INPUT_VCF" "$FILTERED_VCF" "$PASS_VCF"
+bash "$REPO_DIR/WGS_analysis/03_variant_calling/filter_mutect2_pass.sh" "$REF" "$INPUT_VCF" "$FILTERED_VCF" "$PASS_VCF"

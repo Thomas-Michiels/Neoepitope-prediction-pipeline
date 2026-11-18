@@ -37,7 +37,7 @@ SAMPLE="tumor_sample"
 OUT="/path/to/output/tumor.sorted.bam"
 TMP_PREFIX="/path/to/output/tmp/tumor_sort"
 
-qsub -v "REF=$REF,R1=$R1,R2=$R2,SAMPLE=$SAMPLE,OUT=$OUT,TMP_PREFIX=$TMP_PREFIX" WGS/01_alignment/submit_alignment.pbs
+qsub -v "REF=$REF,R1=$R1,R2=$R2,SAMPLE=$SAMPLE,OUT=$OUT,TMP_PREFIX=$TMP_PREFIX" WGS_analysis/01_alignment/submit_alignment.pbs
 ```
 
 Repeat the submission with the matched-normal FASTQ files, a distinct sample identifier, output BAM, and temporary prefix.
@@ -49,7 +49,7 @@ The default thread settings reproduce the original notebook commands. To overrid
 With BWA and SAMtools available in the environment:
 
 ```bash
-bash WGS/01_alignment/bwa_mem_alignment.sh \
+bash WGS_analysis/01_alignment/bwa_mem_alignment.sh \
     /path/to/hg38.fa \
     /path/to/sample_R1.fastq.gz \
     /path/to/sample_R2.fastq.gz \

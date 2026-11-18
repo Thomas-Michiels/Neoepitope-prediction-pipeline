@@ -33,4 +33,4 @@ REPO_DIR="${REPO_DIR:-${PBS_O_WORKDIR:-$PWD}}"
 : "${OUT:?Set OUT}"
 JAVA_HEAP="${JAVA_HEAP:-4g}"
 
-bash "$REPO_DIR/WGS/02_preprocessing/bqsr.sh" "$INPUT_BAM" "$REF" "$MILLS" "$SNPS" "$DBSNP" "$TABLE" "$OUT" "$JAVA_HEAP"
+bash "$REPO_DIR/WGS_analysis/02_preprocessing/bqsr.sh" "$INPUT_BAM" "$REF" "$MILLS" "$SNPS" "$DBSNP" "$TABLE" "$OUT" "$JAVA_HEAP"

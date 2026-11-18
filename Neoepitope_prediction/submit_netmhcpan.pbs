@@ -25,4 +25,4 @@ NETMHCPAN_BIN="${NETMHCPAN_BIN:-netMHCpan}"
 
 HLA=$(grep -v '^[[:space:]]*\(#\|$\)' "$HLA_FILE" | paste -sd, -)
 
-bash "$REPO_DIR/Neoepitope/01_prediction/netmhcpan.sh" "$PEPTIDE_FASTA" "$HLA" "$PEPTIDE_LENGTH" "$OUTPUT_FILE" "$NETMHCPAN_BIN"
+bash "$REPO_DIR/Neoepitope_prediction/netmhcpan.sh" "$PEPTIDE_FASTA" "$HLA" "$PEPTIDE_LENGTH" "$OUTPUT_FILE" "$NETMHCPAN_BIN"

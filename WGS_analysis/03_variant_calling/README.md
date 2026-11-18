@@ -40,7 +40,7 @@ NORMAL_BAM="/path/to/normal.recal.bam"
 NORMAL_SAMPLE="normal_sample_id"
 OUT="/path/to/output/mutect2.vcf"
 
-qsub -v "REF=$REF,TUMOR_BAM=$TUMOR_BAM,NORMAL_BAM=$NORMAL_BAM,NORMAL_SAMPLE=$NORMAL_SAMPLE,OUT=$OUT" WGS/03_variant_calling/submit_mutect2.pbs
+qsub -v "REF=$REF,TUMOR_BAM=$TUMOR_BAM,NORMAL_BAM=$NORMAL_BAM,NORMAL_SAMPLE=$NORMAL_SAMPLE,OUT=$OUT" WGS_analysis/03_variant_calling/submit_mutect2.pbs
 ```
 
 2. Filter calls and retain PASS variants:
@@ -50,7 +50,7 @@ INPUT_VCF="/path/to/output/mutect2.vcf"
 FILTERED_VCF="/path/to/output/mutect2.filtered.vcf"
 PASS_VCF="/path/to/output/mutect2.filtered.PASS.vcf"
 
-qsub -v "REF=$REF,INPUT_VCF=$INPUT_VCF,FILTERED_VCF=$FILTERED_VCF,PASS_VCF=$PASS_VCF" WGS/03_variant_calling/submit_filter_mutect2_pass.pbs
+qsub -v "REF=$REF,INPUT_VCF=$INPUT_VCF,FILTERED_VCF=$FILTERED_VCF,PASS_VCF=$PASS_VCF" WGS_analysis/03_variant_calling/submit_filter_mutect2_pass.pbs
 ```
 
 3. Annotate with VEP:
@@ -62,7 +62,7 @@ STATS="/path/to/output/mutect2.vep.html"
 CACHE_DIR="/path/to/vep/cache"
 REF="/path/to/hg38.fa"
 
-qsub -v "INPUT_VCF=$INPUT_VCF,OUT=$OUT,STATS=$STATS,CACHE_DIR=$CACHE_DIR,REF=$REF" WGS/03_variant_calling/submit_annotate_vep.pbs
+qsub -v "INPUT_VCF=$INPUT_VCF,OUT=$OUT,STATS=$STATS,CACHE_DIR=$CACHE_DIR,REF=$REF" WGS_analysis/03_variant_calling/submit_annotate_vep.pbs
 ```
 
 Submit each step only after the previous job succeeds. For automated ordering, use PBS job dependencies, e.g. `qsub -W depend=afterok:JOBID ...`.
@@ -72,15 +72,15 @@ Submit each step only after the previous job succeeds. For automated ordering, u
 With GATK, bcftools, VEP, and bgzip available in the environment:
 
 ```bash
-bash WGS/03_variant_calling/mutect2.sh \
+bash WGS_analysis/03_variant_calling/mutect2.sh \
     /path/to/hg38.fa /path/to/tumor.recal.bam /path/to/normal.recal.bam \
     normal_sample_id /path/to/output/mutect2.vcf
 
-bash WGS/03_variant_calling/filter_mutect2_pass.sh \
+bash WGS_analysis/03_variant_calling/filter_mutect2_pass.sh \
     /path/to/hg38.fa /path/to/output/mutect2.vcf \
     /path/to/output/mutect2.filtered.vcf /path/to/output/mutect2.filtered.PASS.vcf
 
-bash WGS/03_variant_calling/annotate_vep.sh \
+bash WGS_analysis/03_variant_calling/annotate_vep.sh \
     /path/to/output/mutect2.filtered.PASS.vcf \
     /path/to/output/mutect2.filtered.PASS.vep.vcf.gz \
     /path/to/output/mutect2.vep.html /path/to/vep/cache /path/to/hg38.fa 16

@@ -40,7 +40,7 @@ INPUT_BAM="/path/to/sample.sorted.bam"
 OUT="/path/to/sample.markdup.bam"
 TMP_PREFIX="/path/to/tmp/sample_markdup"
 
-qsub -v "INPUT_BAM=$INPUT_BAM,OUT=$OUT,TMP_PREFIX=$TMP_PREFIX" WGS/02_preprocessing/submit_mark_duplicates.pbs
+qsub -v "INPUT_BAM=$INPUT_BAM,OUT=$OUT,TMP_PREFIX=$TMP_PREFIX" WGS_analysis/02_preprocessing/submit_mark_duplicates.pbs
 ```
 
 2. Apply BQSR to the complete duplicate-marked BAM:
@@ -54,7 +54,7 @@ DBSNP="/path/to/dbsnp-151.vcf.gz"
 TABLE="/path/to/sample.recal.table"
 OUT="/path/to/sample.recal.bam"
 
-qsub -v "INPUT_BAM=$INPUT_BAM,REF=$REF,MILLS=$MILLS,SNPS=$SNPS,DBSNP=$DBSNP,TABLE=$TABLE,OUT=$OUT" WGS/02_preprocessing/submit_bqsr.pbs
+qsub -v "INPUT_BAM=$INPUT_BAM,REF=$REF,MILLS=$MILLS,SNPS=$SNPS,DBSNP=$DBSNP,TABLE=$TABLE,OUT=$OUT" WGS_analysis/02_preprocessing/submit_bqsr.pbs
 ```
 
 Submit BQSR only after duplicate marking finishes successfully. Repeat with separate tumor and matched-normal paths. PBS supports job dependencies using `qsub -W depend=afterok:JOBID`.
@@ -64,13 +64,13 @@ Submit BQSR only after duplicate marking finishes successfully. Repeat with sepa
 With the software available in your environment:
 
 ```bash
-bash WGS/02_preprocessing/mark_duplicates.sh \
+bash WGS_analysis/02_preprocessing/mark_duplicates.sh \
     /path/to/sample.sorted.bam \
     /path/to/sample.markdup.bam \
     /path/to/tmp/sample_markdup \
     1
 
-bash WGS/02_preprocessing/bqsr.sh \
+bash WGS_analysis/02_preprocessing/bqsr.sh \
     /path/to/sample.markdup.bam \
     /path/to/hg38.fa \
     /path/to/Mills_indels.vcf.gz \

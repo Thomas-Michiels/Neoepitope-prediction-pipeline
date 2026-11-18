@@ -28,4 +28,4 @@ REPO_DIR="${REPO_DIR:-${PBS_O_WORKDIR:-$PWD}}"
 : "${REF:?Set REF}"
 FORKS="${FORKS:-${PBS_NP:-16}}"
 
-bash "$REPO_DIR/WGS/03_variant_calling/annotate_vep.sh" "$INPUT_VCF" "$OUT" "$STATS" "$CACHE_DIR" "$REF" "$FORKS"
+bash "$REPO_DIR/WGS_analysis/03_variant_calling/annotate_vep.sh" "$INPUT_VCF" "$OUT" "$STATS" "$CACHE_DIR" "$REF" "$FORKS"

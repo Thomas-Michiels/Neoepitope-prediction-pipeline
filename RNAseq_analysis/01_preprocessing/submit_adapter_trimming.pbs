@@ -26,4 +26,4 @@ REPO_DIR="${REPO_DIR:-${PBS_O_WORKDIR:-$PWD}}"
 : "${OUT_R2:?Set OUT_R2}"
 THREADS="${THREADS:-${PBS_NP:-1}}"
 
-bash "$REPO_DIR/RNAseq/01_preprocessing/adapter_trimming.sh" "$R1" "$R2" "$OUT_R1" "$OUT_R2" "$THREADS"
+bash "$REPO_DIR/RNAseq_analysis/01_preprocessing/adapter_trimming.sh" "$R1" "$R2" "$OUT_R1" "$OUT_R2" "$THREADS"

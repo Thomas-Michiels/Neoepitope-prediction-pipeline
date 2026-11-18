@@ -35,4 +35,4 @@ THREADS="${THREADS:-${PBS_NP:-48}}"
 LIBRARY="${LIBRARY:-SMARTer_Total_RNA_Mammalian_Pico_Input}"
 PLATFORM_UNIT="${PLATFORM_UNIT:-NovaSeqX}"
 
-bash "$REPO_DIR/RNAseq/03_alignment/bwa_mem_alignment.sh" "$R1" "$R2" "$BWA_REFERENCE" "$OUTPUT_BAM" "$THREADS" "$RG_ID" "$SAMPLE" "$LIBRARY" "$PLATFORM_UNIT"
+bash "$REPO_DIR/RNAseq_analysis/03_alignment/bwa_mem_alignment.sh" "$R1" "$R2" "$BWA_REFERENCE" "$OUTPUT_BAM" "$THREADS" "$RG_ID" "$SAMPLE" "$LIBRARY" "$PLATFORM_UNIT"

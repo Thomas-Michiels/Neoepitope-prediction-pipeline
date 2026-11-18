@@ -24,4 +24,4 @@ REPO_DIR="${REPO_DIR:-${PBS_O_WORKDIR:-$PWD}}"
 : "${OUT_DIR:?Set OUT_DIR}"
 THREADS="${THREADS:-${PBS_NP:-2}}"
 
-bash "$REPO_DIR/QC/01_fastqc/fastqc.sh" "$R1" "$R2" "$OUT_DIR" "$THREADS"
+bash "$REPO_DIR/QC/fastqc.sh" "$R1" "$R2" "$OUT_DIR" "$THREADS"

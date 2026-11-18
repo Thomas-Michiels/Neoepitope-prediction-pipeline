@@ -23,4 +23,4 @@ REPO_DIR="${REPO_DIR:-${PBS_O_WORKDIR:-$PWD}}"
 : "${OUTPUT_BAM:?Set OUTPUT_BAM}"
 STATS_PREFIX="${STATS_PREFIX:-}"
 
-bash "$REPO_DIR/RNAseq/04_expression/umi_deduplication.sh" "$INPUT_BAM" "$OUTPUT_BAM" ${STATS_PREFIX:+"$STATS_PREFIX"}
+bash "$REPO_DIR/RNAseq_analysis/04_expression/umi_deduplication.sh" "$INPUT_BAM" "$OUTPUT_BAM" ${STATS_PREFIX:+"$STATS_PREFIX"}

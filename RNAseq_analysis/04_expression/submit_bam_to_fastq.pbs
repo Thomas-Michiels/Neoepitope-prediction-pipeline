@@ -24,4 +24,4 @@ REPO_DIR="${REPO_DIR:-${PBS_O_WORKDIR:-$PWD}}"
 : "${R2_FASTQ:?Set R2_FASTQ}"
 THREADS="${THREADS:-${PBS_NP:-4}}"
 
-bash "$REPO_DIR/RNAseq/04_expression/bam_to_fastq.sh" "$INPUT_BAM" "$R1_FASTQ" "$R2_FASTQ" "$THREADS"
+bash "$REPO_DIR/RNAseq_analysis/04_expression/bam_to_fastq.sh" "$INPUT_BAM" "$R1_FASTQ" "$R2_FASTQ" "$THREADS"

@@ -28,4 +28,4 @@ REPO_DIR="${REPO_DIR:-${PBS_O_WORKDIR:-$PWD}}"
 HLAHD_ROOT="${HLAHD_ROOT:-${VSC_DATA_VO:?VSC_DATA_VO must be set}/Shared_Software/hlahd.1.7.0}"
 THREADS="${THREADS:-${PBS_NP:-18}}"
 
-bash "$REPO_DIR/WGS/04_HLA_typing/hla_hd.sh" "$R1" "$R2" "$SAMPLE" "$OUT_DIR" "$HLAHD_ROOT" "$THREADS"
+bash "$REPO_DIR/WGS_analysis/04_HLA_typing/hla_hd.sh" "$R1" "$R2" "$SAMPLE" "$OUT_DIR" "$HLAHD_ROOT" "$THREADS"

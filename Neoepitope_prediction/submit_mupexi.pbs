@@ -39,4 +39,4 @@ PYTHON_BIN="${PYTHON_BIN:-python}"
 
 HLA=$(grep -v '^[[:space:]]*\(#\|$\)' "$HLA_FILE" | paste -sd, -)
 
-bash "$REPO_DIR/Neoepitope/01_prediction/mupexi.sh" "$VCF" "$HLA" "$PEPTIDE_LENGTH" "$EXPRESSION_TSV" "$OUTPUT_DIR" "$SAMPLE_NAME" "$MUPEXI_SCRIPT" "$MUPEXI_CONFIG" "$THREADS" "$EXPRESSION_LEVEL" "$PYTHON_BIN"
+bash "$REPO_DIR/Neoepitope_prediction/mupexi.sh" "$VCF" "$HLA" "$PEPTIDE_LENGTH" "$EXPRESSION_TSV" "$OUTPUT_DIR" "$SAMPLE_NAME" "$MUPEXI_SCRIPT" "$MUPEXI_CONFIG" "$THREADS" "$EXPRESSION_LEVEL" "$PYTHON_BIN"

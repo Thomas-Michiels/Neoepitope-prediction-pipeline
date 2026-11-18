@@ -36,4 +36,4 @@ THREADS="${THREADS:-${PBS_NP:-48}}"
 LIBRARY="${LIBRARY:-SMARTer_Total_RNA_Mammalian_Pico_Input}"
 PLATFORM_UNIT="${PLATFORM_UNIT:-NovaSeqX}"
 
-bash "$REPO_DIR/RNAseq/03_alignment/hisat2_alignment.sh" "$R1" "$R2" "$HISAT2_INDEX" "$SPLICE_SITES" "$OUT_PREFIX" "$THREADS" "$RG_ID" "$SAMPLE" "$LIBRARY" "$PLATFORM_UNIT"
+bash "$REPO_DIR/RNAseq_analysis/03_alignment/hisat2_alignment.sh" "$R1" "$R2" "$HISAT2_INDEX" "$SPLICE_SITES" "$OUT_PREFIX" "$THREADS" "$RG_ID" "$SAMPLE" "$LIBRARY" "$PLATFORM_UNIT"

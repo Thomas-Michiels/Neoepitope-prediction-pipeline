@@ -20,7 +20,7 @@ This module runs ASEReadCounter.
 Run from the repository root; replace example paths with actual HPC paths:
 
 ```bash
-qsub -v REF=/path/hg38.fa,BAM=/path/rna_dedup.bam,VCF=/path/prepared_variants.vcf.gz,OUT=/path/ase.tsv RNAseq/05_allele_specific_expression/submit_ase_readcounter.pbs
+qsub -v REF=/path/hg38.fa,BAM=/path/rna_dedup.bam,VCF=/path/prepared_variants.vcf.gz,OUT=/path/ase.tsv RNAseq_analysis/05_allele_specific_expression/submit_ase_readcounter.pbs
 ```
 
 Optional: set `MIN_BQ` and `MIN_MQ` in the `-v` list.
@@ -28,7 +28,7 @@ Optional: set `MIN_BQ` and `MIN_MQ` in the `-v` list.
 ## Run without PBS
 ```bash
 module load GATK/4.4.0.0-GCCcore-12.3.0-Java-17
-bash RNAseq/05_allele_specific_expression/ase_readcounter.sh \
+bash RNAseq_analysis/05_allele_specific_expression/ase_readcounter.sh \
   /path/hg38.fa /path/rna_dedup.bam /path/prepared_variants.vcf.gz \
   /path/ase.tsv 2 10
 ```
