@@ -25,7 +25,7 @@ Check that the transcript IDs in the expression table match the VEP annotation u
 
 ## HPC resources
 
-MuPeXI: 48 CPUs, 30 GB, 24 h. netMHCpan: 1 CPU, 30 GB, 24 h.
+MuPeXI: 1 CPUs, 30 GB, 4 h. netMHCpan: 1 CPU, 30 GB, 4 h.
 
 ## Submit with qsub
 

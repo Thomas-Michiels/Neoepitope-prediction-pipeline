@@ -20,7 +20,7 @@ Software:
 - `HLA-HD 1.7.0` (installed under `$VSC_DATA_VO/Shared_Software/hlahd.1.7.0`)
 - `Bowtie2/2.5.4-GCC-13.2.0`
 
-The HLA-HD installation must contain `bin/hlahd.sh`, `freq_data/`, `HLA_gene.split.txt`, and `dictionary/`.
+The HLA-HD installation must contain `bin/hlahd.sh`, `freq_data/`, `HLA_gene.split.txt`, and `dictionary/` like standard installs
 
 ## HPC resources
 

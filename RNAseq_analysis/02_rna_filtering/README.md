@@ -16,8 +16,6 @@ Index defaults in PBS wrappers to be changed accordingly:
 - `$VSC_DATA_VO/genomes/Hsapiens/tRNA/hisat2/hsa_tRNA.index`
 - `$VSC_DATA_VO/genomes/Hsapiens/sn-o-RNA/hisat2/hsa_sn-o-RNA.index`
 
-Override any index with `INDEX=/path/to/index_prefix`.
-
 ## Software
 
 HISAT2 2.2.1 (`HISAT2/2.2.1-gompi-2023a`).

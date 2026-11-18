@@ -59,7 +59,7 @@ The workflow includes:
 1. Quality control: Evaluation of raw sequencing reads.
 2. UMI extraction: Extraction of UMIs from the library-specific read structure using UMI-tools.
 3. Adapter and quality trimming: Removal of adapter sequences and low-quality bases.
-4. RNA contamination filtering: Removal of reads originating from abundant non-coding RNA species, including ribosomal RNA (rRNA), transfer RNA (tRNA), and small nucleolar RNA (snoRNA), where applicable.
+4. RNA contamination filtering: Removal of reads originating from abundant non-coding RNA species, including ribosomal RNA (rRNA), transfer RNA (tRNA), and small nucleolar RNA (snoRNA).
 5. Read alignment: Two-step mapping of filtered reads to the human reference genome using HISAT2 and BWA-mem.
 6. UMI-aware duplicate handling: Identification of PCR duplicates using UMI information.
 7. Transcript analysis: Assessment of gene expression and transcript structures.
