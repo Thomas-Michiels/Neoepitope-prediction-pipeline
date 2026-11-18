@@ -61,8 +61,3 @@ bash RNAseq/01_preprocessing/umi_extraction_read2.sh \
 ```
 
 Adapter trimming is performed separately with `adapter_trimming.sh` and `submit_adapter_trimming.pbs`.
-<<<<<<< HEAD
-RNA-seq preprocessing performs UMI extraction and adapter trimming.
-=======
-RNA-seq preprocessing includes adapter trimming and UMI extraction.
->>>>>>> feature/merge-conflicts
