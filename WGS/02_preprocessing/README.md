@@ -20,7 +20,7 @@ BQSR: duplicate-marked BAM (`INPUT_BAM`), GRCh38 reference (`REF`), known-sites 
 Software:
 
 - `biobambam2/2.0.185-GCC-12.3.0`
-- `SAMtools/1.19.2-GCC-13.2.0` (BQSR)
+- `SAMtools/1.19.2-GCC-13.2.0` (BQSR) and `SAMtools/1.18-GCC-12.3.0` (duplicate marking)
 - `GATK/4.6.0.0-GCCcore-13.2.0-Java-17`
 
 The reference and known-sites VCFs must be indexed as required by GATK.

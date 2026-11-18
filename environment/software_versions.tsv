@@ -1,0 +1,28 @@
+step	wrapper	software	version_or_module
+QC	QC/01_fastqc/submit_fastqc.pbs	FastQC	FastQC/0.12.1-Java-11
+WGS alignment	WGS/01_alignment/submit_alignment.pbs	BWA	BWA/0.7.18-GCCcore-13.2.0
+WGS alignment	WGS/01_alignment/submit_alignment.pbs	SAMtools	SAMtools/1.19.2-GCC-13.2.0
+WGS duplicate marking	WGS/02_preprocessing/submit_mark_duplicates.pbs	biobambam2	biobambam2/2.0.185-GCC-12.3.0
+WGS duplicate marking	WGS/02_preprocessing/submit_mark_duplicates.pbs	SAMtools	SAMtools/1.18-GCC-12.3.0
+WGS BQSR	WGS/02_preprocessing/submit_bqsr.pbs	GATK	GATK/4.6.0.0-GCCcore-13.2.0-Java-17
+WGS BQSR	WGS/02_preprocessing/submit_bqsr.pbs	SAMtools	SAMtools/1.19.2-GCC-13.2.0
+WGS somatic calling	WGS/03_variant_calling/submit_mutect2.pbs	GATK	GATK/4.6.0.0-GCCcore-13.2.0-Java-17
+WGS filtering	WGS/03_variant_calling/submit_filter_mutect2_pass.pbs	GATK	GATK/4.6.0.0-GCCcore-13.2.0-Java-17
+WGS filtering	WGS/03_variant_calling/submit_filter_mutect2_pass.pbs	BCFtools	BCFtools/1.18-GCC-12.3.0
+WGS annotation	WGS/03_variant_calling/submit_annotate_vep.pbs	Ensembl VEP	VEP/113.0-GCC-12.3.0 (bgzip must be on PATH; load an HTSlib module if the VEP module does not provide it)
+HLA typing	WGS/04_HLA_typing/submit_hla_hd.pbs	HLA-HD	1.7.0 (local installation in $VSC_DATA_VO/Shared_Software/hlahd.1.7.0)
+HLA typing	WGS/04_HLA_typing/submit_hla_hd.pbs	Bowtie2	Bowtie2/2.5.4-GCC-13.2.0
+RNA UMI extraction	RNAseq/01_preprocessing/submit_umi_extraction_read*.pbs	UMI-tools	UMI-tools/1.1.4-foss-2023a
+RNA trimming	RNAseq/01_preprocessing/submit_adapter_trimming.pbs	Cutadapt	cutadapt/5.0-GCCcore-13.2.0
+RNA ncRNA filtering	RNAseq/02_rna_filtering/submit_filter_*.pbs	HISAT2	HISAT2/2.2.1-gompi-2023a
+RNA alignment	RNAseq/03_alignment/submit_hisat2_alignment.pbs	HISAT2	HISAT2/2.2.1-gompi-2023a
+RNA alignment	RNAseq/03_alignment/submit_bwa_mem_alignment.pbs	BWA	BWA/0.7.17-GCCcore-12.3.0
+RNA alignment	RNAseq/03_alignment/submit_*.pbs	SAMtools	SAMtools/1.18-GCC-12.3.0
+RNA deduplication	RNAseq/04_expression/submit_umi_deduplication.pbs	UMI-tools	UMI-tools/1.1.4-foss-2023a
+RNA deduplication	RNAseq/04_expression/submit_umi_deduplication.pbs	SAMtools	SAMtools/1.18-GCC-12.3.0
+RNA BAM to FASTQ	RNAseq/04_expression/submit_bam_to_fastq.pbs	SAMtools	SAMtools/1.18-GCC-12.3.0
+RNA quantification	RNAseq/04_expression/submit_kallisto_quant.pbs	Kallisto	kallisto/0.51.1-gompi-2023a
+RNA gene-level summary	RNAseq/04_expression/submit_kallisto_transcript_to_gene.pbs	R + tximport	R/4.5.1-gfbf-2025a; R-bundle-Bioconductor/3.22-foss-2025a-R-4.5.1; R-bundle-CRAN/2025.10-foss-2025a
+Allele-specific expression	RNAseq/05_allele_specific_expression/submit_ase_readcounter.pbs	GATK	GATK/4.4.0.0-GCCcore-12.3.0-Java-17
+Neoepitope prediction	Neoepitope/01_prediction/submit_mupexi.pbs	MuPeXI	local installation; VEP and netMHCpan paths set in its config.ini
+Neoepitope prediction	Neoepitope/01_prediction/submit_netmhcpan.pbs	netMHCpan	local installation (academic licence, DTU Health Tech)

@@ -1,1 +1,36 @@
+# macOS
 .DS_Store
+__MACOSX/
+
+# Sequencing data and analysis outputs: never commit these
+*.fastq
+*.fastq.gz
+*.fq
+*.fq.gz
+*.sam
+*.bam
+*.bai
+*.cram
+*.crai
+*.vcf
+*.vcf.gz
+*.tbi
+*.h5
+results/
+output/
+
+# PBS/Torque job logs (jobname.o12345 / jobname.e12345) and pipeline logs
+*.o[0-9]*
+*.e[0-9]*
+logs/
+
+# Patient-specific copies of the configuration (keep config/config.sh as the template)
+config/*.sh
+!config/config.sh
+
+# R and editor files
+.Rhistory
+.RData
+.Rproj.user/
+.vscode/
+.idea/
