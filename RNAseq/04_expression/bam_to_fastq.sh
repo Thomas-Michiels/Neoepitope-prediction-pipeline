@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
 INPUT=$1; R1=$2; R2=$3; THREADS=${4:-1}
 [[ -f "$INPUT" ]] || { echo "Missing BAM: $INPUT" >&2; exit 1; }

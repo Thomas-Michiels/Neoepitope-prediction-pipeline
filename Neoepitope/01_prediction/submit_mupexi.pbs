@@ -1,0 +1,42 @@
+#!/bin/bash -l
+#PBS -N mupexi
+#PBS -l nodes=1:ppn=48
+#PBS -l mem=30gb
+#PBS -l walltime=24:00:00
+
+# Run from the repository root, or pass REPO_DIR=/path/to/repository with qsub -v.
+#
+# Required variables (qsub -v):
+#   VCF               PASS-filtered somatic VCF
+#   HLA_FILE          text file with one HLA allele per line, e.g. HLA-A02:01
+#   EXPRESSION_TSV    transcript expression table (Kallisto abundance.tsv)
+#   OUTPUT_DIR        output directory
+#   SAMPLE_NAME       prefix for the output files
+#   MUPEXI_SCRIPT     path to MuPeXI.py
+#   MUPEXI_CONFIG     path to the MuPeXI config.ini (paths to VEP and netMHCpan)
+# Optional variables (default):
+#   PEPTIDE_LENGTH    peptide length or range without commas, e.g. 8-11 (9)
+#   THREADS           MuPeXI forks (PBS_NP, else 48)
+#   EXPRESSION_LEVEL  transcript or gene (transcript)
+#   PYTHON_BIN        Python interpreter for MuPeXI (python)
+#
+# HLA alleles are read from a file because qsub -v values cannot contain commas.
+
+set -euo pipefail
+
+REPO_DIR="${REPO_DIR:-${PBS_O_WORKDIR:-$PWD}}"
+: "${VCF:?Set VCF}"
+: "${HLA_FILE:?Set HLA_FILE}"
+: "${EXPRESSION_TSV:?Set EXPRESSION_TSV}"
+: "${OUTPUT_DIR:?Set OUTPUT_DIR}"
+: "${SAMPLE_NAME:?Set SAMPLE_NAME}"
+: "${MUPEXI_SCRIPT:?Set MUPEXI_SCRIPT}"
+: "${MUPEXI_CONFIG:?Set MUPEXI_CONFIG}"
+PEPTIDE_LENGTH="${PEPTIDE_LENGTH:-9}"
+THREADS="${THREADS:-${PBS_NP:-48}}"
+EXPRESSION_LEVEL="${EXPRESSION_LEVEL:-transcript}"
+PYTHON_BIN="${PYTHON_BIN:-python}"
+
+HLA=$(grep -v '^[[:space:]]*\(#\|$\)' "$HLA_FILE" | paste -sd, -)
+
+bash "$REPO_DIR/Neoepitope/01_prediction/mupexi.sh" "$VCF" "$HLA" "$PEPTIDE_LENGTH" "$EXPRESSION_TSV" "$OUTPUT_DIR" "$SAMPLE_NAME" "$MUPEXI_SCRIPT" "$MUPEXI_CONFIG" "$THREADS" "$EXPRESSION_LEVEL" "$PYTHON_BIN"

@@ -1,0 +1,27 @@
+#!/bin/bash -l
+#PBS -N FastQC
+#PBS -l nodes=1:ppn=2
+#PBS -l mem=8gb
+#PBS -l walltime=12:00:00
+
+# Run from the repository root, or pass REPO_DIR=/path/to/repository with qsub -v.
+#
+# Required variables (qsub -v):
+#   R1       read 1 FASTQ
+#   R2       read 2 FASTQ
+#   OUT_DIR  output directory for the FastQC reports
+# Optional variables (default):
+#   THREADS  FastQC threads (PBS_NP, else 2)
+
+module load FastQC/0.12.1-Java-11
+
+# Strict mode is enabled after the module loads so module scripts are not affected by it.
+set -euo pipefail
+
+REPO_DIR="${REPO_DIR:-${PBS_O_WORKDIR:-$PWD}}"
+: "${R1:?Set R1}"
+: "${R2:?Set R2}"
+: "${OUT_DIR:?Set OUT_DIR}"
+THREADS="${THREADS:-${PBS_NP:-2}}"
+
+bash "$REPO_DIR/QC/01_fastqc/fastqc.sh" "$R1" "$R2" "$OUT_DIR" "$THREADS"

@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 
 R1="${1:?Provide R1 FASTQ}"
 R2="${2:?Provide R2 FASTQ}"

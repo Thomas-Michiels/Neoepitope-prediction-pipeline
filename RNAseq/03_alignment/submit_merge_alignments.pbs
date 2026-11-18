@@ -4,17 +4,24 @@
 #PBS -l mem=40gb
 #PBS -l walltime=48:00:00
 
-# Paths and parameters used by this job:
-# HISAT2_BAM: Path to the HISAT2-aligned BAM file
-# BWA_BAM: Path to the BWA-aligned BAM file
-# OUTPUT_BAM: Path for the output BAM file
-# THREADS: Number of CPU threads to use
-# SCRIPT_DIR: Directory containing the corresponding analysis .sh script
+# Run from the repository root, or pass REPO_DIR=/path/to/repository with qsub -v.
+#
+# Required variables (qsub -v):
+#   HISAT2_BAM  HISAT2 BAM
+#   BWA_BAM     BWA-MEM BAM
+#   OUTPUT_BAM  output merged, sorted BAM
+# Optional variables (default):
+#   THREADS     samtools threads (PBS_NP, else 16)
 
 module load SAMtools/1.18-GCC-12.3.0
+
+# Strict mode is enabled after the module loads so module scripts are not affected by it.
+set -euo pipefail
+
+REPO_DIR="${REPO_DIR:-${PBS_O_WORKDIR:-$PWD}}"
 : "${HISAT2_BAM:?Set HISAT2_BAM}"
 : "${BWA_BAM:?Set BWA_BAM}"
 : "${OUTPUT_BAM:?Set OUTPUT_BAM}"
-THREADS=${PBS_NP:-16}
-SCRIPT_DIR=${SCRIPT_DIR:?Set SCRIPT_DIR to RNAseq/03_alignment absolute path}
-bash "$SCRIPT_DIR/merge_alignments.sh" "$HISAT2_BAM" "$BWA_BAM" "$OUTPUT_BAM" "$THREADS"
+THREADS="${THREADS:-${PBS_NP:-16}}"
+
+bash "$REPO_DIR/RNAseq/03_alignment/merge_alignments.sh" "$HISAT2_BAM" "$BWA_BAM" "$OUTPUT_BAM" "$THREADS"

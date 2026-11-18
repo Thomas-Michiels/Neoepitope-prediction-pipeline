@@ -1,4 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
+
 INPUT_VCF="$1"
 OUT="$2"
 STATS="$3"

@@ -4,16 +4,26 @@
 #PBS -l mem=20gb
 #PBS -l walltime=10:00:00
 
-# Paths and parameters used by this job:
-# TXIMPORT_R_SCRIPT: Path to the R script used for transcript-to-gene conversion
-# GTF_FILE: Path to the transcript annotation GTF file
-# ABUNDANCE_TSV: Path to Kallisto abundance.tsv
-# GENE_OUTPUT_TSV: Path for the gene-level expression TSV
-# SCRIPT_DIR: Directory containing the corresponding analysis .sh script
+# Run from the repository root, or pass REPO_DIR=/path/to/repository with qsub -v.
+#
+# Required variables (qsub -v):
+#   GTF_FILE           annotation GTF used to build the Kallisto index
+#   ABUNDANCE_TSV      Kallisto abundance.tsv
+#   GENE_OUTPUT_TSV    output gene-level TSV
+# Optional variables (default):
+#   TXIMPORT_R_SCRIPT  tximport R script ($REPO_DIR/RNAseq/04_expression/kallisto_gene_matrix_tximport_2.R)
 
 module load R/4.5.1-gfbf-2025a
 module load R-bundle-Bioconductor/3.22-foss-2025a-R-4.5.1
 module load R-bundle-CRAN/2025.10-foss-2025a
-: "${TXIMPORT_R_SCRIPT:?Set TXIMPORT_R_SCRIPT}" "${GTF_FILE:?Set GTF_FILE}" "${ABUNDANCE_TSV:?Set ABUNDANCE_TSV}" "${GENE_OUTPUT_TSV:?Set GENE_OUTPUT_TSV}"
-SCRIPT_DIR="${PBS_O_WORKDIR:-$PWD}/RNAseq/04_expression"
-"$SCRIPT_DIR/kallisto_transcript_to_gene.sh" "$TXIMPORT_R_SCRIPT" "$GTF_FILE" "$ABUNDANCE_TSV" "$GENE_OUTPUT_TSV"
+
+# Strict mode is enabled after the module loads so module scripts are not affected by it.
+set -euo pipefail
+
+REPO_DIR="${REPO_DIR:-${PBS_O_WORKDIR:-$PWD}}"
+: "${GTF_FILE:?Set GTF_FILE}"
+: "${ABUNDANCE_TSV:?Set ABUNDANCE_TSV}"
+: "${GENE_OUTPUT_TSV:?Set GENE_OUTPUT_TSV}"
+TXIMPORT_R_SCRIPT="${TXIMPORT_R_SCRIPT:-$REPO_DIR/RNAseq/04_expression/kallisto_gene_matrix_tximport_2.R}"
+
+bash "$REPO_DIR/RNAseq/04_expression/kallisto_transcript_to_gene.sh" "$TXIMPORT_R_SCRIPT" "$GTF_FILE" "$ABUNDANCE_TSV" "$GENE_OUTPUT_TSV"

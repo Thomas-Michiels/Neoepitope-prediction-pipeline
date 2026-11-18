@@ -2,6 +2,11 @@
 
 Sequential removal of reads mapping to rRNA, tRNA and sn-/snoRNA references.
 
+## Files
+
+- `filter_ncrna.sh`: one HISAT2 filtering script used for all three references; the reference is chosen with the index argument.
+- `submit_filter_rrna.pbs`, `submit_filter_trna.pbs`, `submit_filter_snorna.pbs`: PBS wrappers that run `filter_ncrna.sh` with the rRNA, tRNA or sn/snoRNA index as default.
+
 ## Inputs and outputs
 
 Each step accepts paired compressed FASTQs, a HISAT2 index prefix, and an output prefix. The paired unmapped reads are retained for the next stage, with filenames `<OUT>.fastq.1.gz` and `<OUT>.fastq.2.gz`.
@@ -46,5 +51,5 @@ For automatic scheduling, use `qsub -W depend=afterok:<previous_job_id>` on the 
 ## Run without PBS
 
 ```bash
-bash RNAseq/02_rna_filtering/filter_rrna.sh R1.fastq.gz R2.fastq.gz /path/hsa_rRNA.index /path/sample_rRNA_Filtered 16
+bash RNAseq/02_rna_filtering/filter_ncrna.sh R1.fastq.gz R2.fastq.gz /path/hsa_rRNA.index /path/sample_rRNA_Filtered 16
 ```

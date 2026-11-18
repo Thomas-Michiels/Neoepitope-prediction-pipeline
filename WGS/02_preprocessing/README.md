@@ -20,7 +20,7 @@ BQSR: duplicate-marked BAM (`INPUT_BAM`), GRCh38 reference (`REF`), known-sites 
 Software:
 
 - `biobambam2/2.0.185-GCC-12.3.0`
-- `SAMtools/1.19.2-GCC-13.2.0` (BQSR)
+- `SAMtools/1.19.2-GCC-13.2.0` (BQSR) and `SAMtools/1.18-GCC-12.3.0` (duplicate marking)
 - `GATK/4.6.0.0-GCCcore-13.2.0-Java-17`
 
 The reference and known-sites VCFs must be indexed as required by GATK.
@@ -36,18 +36,16 @@ From the repository root, set full paths. `qsub -v` values must not contain comm
 1. Mark duplicates on the complete aligned BAM:
 
 ```bash
-SCRIPT="$(pwd)/WGS/02_preprocessing/mark_duplicates.sh"
 INPUT_BAM="/path/to/sample.sorted.bam"
 OUT="/path/to/sample.markdup.bam"
 TMP_PREFIX="/path/to/tmp/sample_markdup"
 
-qsub -v "SCRIPT=$SCRIPT,INPUT_BAM=$INPUT_BAM,OUT=$OUT,TMP_PREFIX=$TMP_PREFIX" WGS/02_preprocessing/submit_mark_duplicates.pbs
+qsub -v "INPUT_BAM=$INPUT_BAM,OUT=$OUT,TMP_PREFIX=$TMP_PREFIX" WGS/02_preprocessing/submit_mark_duplicates.pbs
 ```
 
 2. Apply BQSR to the complete duplicate-marked BAM:
 
 ```bash
-SCRIPT="$(pwd)/WGS/02_preprocessing/bqsr.sh"
 INPUT_BAM="/path/to/sample.markdup.bam"
 REF="/path/to/hg38.fa"
 MILLS="/path/to/Mills_and_1000G_gold_standard.indels.hg38.vcf.gz"
@@ -56,7 +54,7 @@ DBSNP="/path/to/dbsnp-151.vcf.gz"
 TABLE="/path/to/sample.recal.table"
 OUT="/path/to/sample.recal.bam"
 
-qsub -v "SCRIPT=$SCRIPT,INPUT_BAM=$INPUT_BAM,REF=$REF,MILLS=$MILLS,SNPS=$SNPS,DBSNP=$DBSNP,TABLE=$TABLE,OUT=$OUT" WGS/02_preprocessing/submit_bqsr.pbs
+qsub -v "INPUT_BAM=$INPUT_BAM,REF=$REF,MILLS=$MILLS,SNPS=$SNPS,DBSNP=$DBSNP,TABLE=$TABLE,OUT=$OUT" WGS/02_preprocessing/submit_bqsr.pbs
 ```
 
 Submit BQSR only after duplicate marking finishes successfully. Repeat with separate tumor and matched-normal paths. PBS supports job dependencies using `qsub -W depend=afterok:JOBID`.

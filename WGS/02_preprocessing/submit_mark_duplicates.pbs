@@ -4,12 +4,25 @@
 #PBS -l mem=60gb
 #PBS -l walltime=48:00:00
 
-# Paths and parameters used by this job:
-# SCRIPT: Path to the corresponding analysis .sh script
-# INPUT_BAM: Path to the input BAM file
-# OUT: Output file path or output prefix, depending on the analysis script
-# TMP_PREFIX: Prefix for temporary files
+# Run from the repository root, or pass REPO_DIR=/path/to/repository with qsub -v.
+#
+# Required variables (qsub -v):
+#   INPUT_BAM   coordinate-sorted BAM
+#   OUT         duplicate-marked output BAM
+#   TMP_PREFIX  prefix for bamsormadup temporary files
+# Optional variables (default):
+#   THREADS     threads for bamsormadup (PBS_NP, else 1)
+
 module load biobambam2/2.0.185-GCC-12.3.0
 module load SAMtools/1.18-GCC-12.3.0
-cd "$PBS_O_WORKDIR"
-bash "$SCRIPT" "$INPUT_BAM" "$OUT" "$TMP_PREFIX" "${PBS_NP:-1}"
+
+# Strict mode is enabled after the module loads so module scripts are not affected by it.
+set -euo pipefail
+
+REPO_DIR="${REPO_DIR:-${PBS_O_WORKDIR:-$PWD}}"
+: "${INPUT_BAM:?Set INPUT_BAM}"
+: "${OUT:?Set OUT}"
+: "${TMP_PREFIX:?Set TMP_PREFIX}"
+THREADS="${THREADS:-${PBS_NP:-1}}"
+
+bash "$REPO_DIR/WGS/02_preprocessing/mark_duplicates.sh" "$INPUT_BAM" "$OUT" "$TMP_PREFIX" "$THREADS"

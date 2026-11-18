@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "If you use this pipeline, please cite it using the metadata below."
+title: "Neoepitope prediction pipeline"
+abstract: >-
+  PBS/Bash workflow for the identification of tumor-specific neoepitopes from
+  tumor and matched-normal whole-genome sequencing and tumor RNA sequencing data.
+type: software
+authors:
+  - family-names: Michiels
+    given-names: Thomas
+    affiliation: Ghent University
+license: Apache-2.0
+version: 1.0.0
+date-released: "2026-11-18"
+keywords:
+  - neoepitope
+  - cancer vaccine
+  - whole-genome sequencing
+  - RNA-seq
+  - HLA

@@ -4,20 +4,28 @@
 #PBS -l mem=60gb
 #PBS -l walltime=24:00:00
 
-# Paths and parameters used by this job:
-# REF: Path to the reference genome FASTA file
-# VCF: Path to the input VCF file
-# OUT: Output file path or output prefix, depending on the analysis script
-# MIN_BQ: Minimum base quality for ASEReadCounter
-# MIN_MQ: Minimum mapping quality for ASEReadCounter
+# Run from the repository root, or pass REPO_DIR=/path/to/repository with qsub -v.
+#
+# Required variables (qsub -v):
+#   REF     GRCh38 FASTA with .fai and .dict
+#   BAM     deduplicated, indexed RNA BAM
+#   VCF     variant VCF (see module README)
+#   OUT     output table
+# Optional variables (default):
+#   MIN_BQ  minimum base quality (2)
+#   MIN_MQ  minimum mapping quality (10)
 
 module load GATK/4.4.0.0-GCCcore-12.3.0-Java-17
 
+# Strict mode is enabled after the module loads so module scripts are not affected by it.
+set -euo pipefail
+
+REPO_DIR="${REPO_DIR:-${PBS_O_WORKDIR:-$PWD}}"
 : "${REF:?Set REF}"
 : "${BAM:?Set BAM}"
 : "${VCF:?Set VCF}"
 : "${OUT:?Set OUT}"
+MIN_BQ="${MIN_BQ:-2}"
+MIN_MQ="${MIN_MQ:-10}"
 
-bash "${PBS_O_WORKDIR}/RNAseq/05_allele_specific_expression/ase_readcounter.sh" \
-  "$REF" "$BAM" "$VCF" "$OUT" \
-  "${MIN_BQ:-2}" "${MIN_MQ:-10}"
+bash "$REPO_DIR/RNAseq/05_allele_specific_expression/ase_readcounter.sh" "$REF" "$BAM" "$VCF" "$OUT" "$MIN_BQ" "$MIN_MQ"

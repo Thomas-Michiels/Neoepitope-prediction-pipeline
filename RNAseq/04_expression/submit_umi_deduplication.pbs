@@ -4,14 +4,23 @@
 #PBS -l mem=20gb
 #PBS -l walltime=24:00:00
 
-# Paths and parameters used by this job:
-# INPUT_BAM: Path to the input BAM file
-# OUTPUT_BAM: Path for the output BAM file
-# SCRIPT_DIR: Directory containing the corresponding analysis .sh script
-# STATS_PREFIX: Prefix for UMI deduplication statistics files
+# Run from the repository root, or pass REPO_DIR=/path/to/repository with qsub -v.
+#
+# Required variables (qsub -v):
+#   INPUT_BAM     merged, coordinate-sorted BAM
+#   OUTPUT_BAM    output deduplicated BAM
+# Optional variables (default):
+#   STATS_PREFIX  optional prefix for UMI-tools statistics (empty)
 
 module load UMI-tools/1.1.4-foss-2023a
 module load SAMtools/1.18-GCC-12.3.0
-: "${INPUT_BAM:?Set INPUT_BAM}" "${OUTPUT_BAM:?Set OUTPUT_BAM}"
-SCRIPT_DIR="${PBS_O_WORKDIR:-$PWD}/RNAseq/04_expression"
-"$SCRIPT_DIR/umi_deduplication.sh" "$INPUT_BAM" "$OUTPUT_BAM" ${STATS_PREFIX:+"$STATS_PREFIX"}
+
+# Strict mode is enabled after the module loads so module scripts are not affected by it.
+set -euo pipefail
+
+REPO_DIR="${REPO_DIR:-${PBS_O_WORKDIR:-$PWD}}"
+: "${INPUT_BAM:?Set INPUT_BAM}"
+: "${OUTPUT_BAM:?Set OUTPUT_BAM}"
+STATS_PREFIX="${STATS_PREFIX:-}"
+
+bash "$REPO_DIR/RNAseq/04_expression/umi_deduplication.sh" "$INPUT_BAM" "$OUTPUT_BAM" ${STATS_PREFIX:+"$STATS_PREFIX"}

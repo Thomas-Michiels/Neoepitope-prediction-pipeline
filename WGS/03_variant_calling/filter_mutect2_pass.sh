@@ -1,4 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
+
 REF="$1"
 INPUT_VCF="$2"
 FILTERED_VCF="$3"

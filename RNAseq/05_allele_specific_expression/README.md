@@ -13,7 +13,7 @@ This module runs ASEReadCounter.
 
 ## Software and HPC resources
 - GATK `4.4.0.0-GCCcore-12.3.0-Java-17` from the original RNA notebook.
-- PBS: 1 CPU, 50 GB memory, 24 h walltime.
+- PBS: 1 CPU, 60 GB memory, 24 h walltime.
 - Notebook thresholds: minimum base quality 2, minimum mapping quality 10.
 
 ## Submit with qsub

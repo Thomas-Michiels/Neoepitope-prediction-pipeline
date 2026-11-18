@@ -33,17 +33,16 @@ The original UMI extraction PBS script requested 1 CPU, 20 GB memory and 24 hour
 For UMIs defined through SMARTer Stranded Total RNA-Seq Kit v3 - Pico Input Mammalian:
 
 ```bash
-SCRIPT="$(pwd)/RNAseq/01_preprocessing/umi_extraction_read2.sh"
 R1="/path/to/sample_R1.fastq.gz"
 R2="/path/to/sample_R2.fastq.gz"
 OUT_R1="/path/to/sample_R1_UMI_extracted.fastq.gz"
 OUT_R2="/path/to/sample_R2_UMI_extracted.fastq.gz"
 BC_PATTERN="NNNNNNNNXXXXXX"
 
-qsub -v "SCRIPT=$SCRIPT,R1=$R1,R2=$R2,OUT_R1=$OUT_R1,OUT_R2=$OUT_R2,BC_PATTERN=$BC_PATTERN" RNAseq/01_preprocessing/submit_umi_extraction_read2.pbs
+qsub -v "R1=$R1,R2=$R2,OUT_R1=$OUT_R1,OUT_R2=$OUT_R2,BC_PATTERN=$BC_PATTERN" RNAseq/01_preprocessing/submit_umi_extraction_read2.pbs
 ```
 
-For UMIs on Read 1, use `umi_extraction_read1.sh` and `submit_umi_extraction_read1.pbs` with the same arguments.
+For UMIs on Read 1, use `submit_umi_extraction_read1.pbs` with the same variables.
 
 To define a cell barcode, adapt the pattern to the actual library design, for example `CCCCNNNNNNNN` for a 4-base cell barcode followed by an 8-base UMI. Do not use this example unless it matches the reads.
 
@@ -61,8 +60,3 @@ bash RNAseq/01_preprocessing/umi_extraction_read2.sh \
 ```
 
 Adapter trimming is performed separately with `adapter_trimming.sh` and `submit_adapter_trimming.pbs`.
-<<<<<<< HEAD
-RNA-seq preprocessing performs UMI extraction and adapter trimming.
-=======
-RNA-seq preprocessing includes adapter trimming and UMI extraction.
->>>>>>> feature/merge-conflicts

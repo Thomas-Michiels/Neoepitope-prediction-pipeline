@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
 INDEX="$1"
 R1="$2"
