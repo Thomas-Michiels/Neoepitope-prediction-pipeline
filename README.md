@@ -35,115 +35,147 @@ The RNA-seq workflow scripts are designed for libraries generated using the SMAR
 
 ## 3. Bioinformatics Workflow
 
-### 3.1 WGS Processing
+Steps marked *(planned)* are described for completeness but are not yet implemented in this repository.
+
+### 3.1 WGS Processing (`WGS/`)
 
 The WGS analysis starts with raw paired-end FASTQ files from tumor and matched normal samples.
 
-The main processing steps include:
+1. Quality control (`QC/01_fastqc`): FastQC on the raw reads.
+2. Read alignment (`01_alignment`): mapping of reads to GRCh38 with BWA-MEM, followed by coordinate sorting.
+3. Alignment processing (`02_preprocessing`): duplicate marking (biobambam2) and base quality score recalibration (GATK BQSR).
+4. Somatic variant calling (`03_variant_calling`): tumor–normal calling with GATK Mutect2.
+5. Variant filtering (`03_variant_calling`): GATK FilterMutectCalls and retention of PASS variants.
+6. Variant annotation (`03_variant_calling`): Ensembl VEP 113.
+7. HLA typing (`04_HLA_typing`): HLA-HD on the WGS reads.
 
-1. Quality control: Assessment of sequencing quality and read characteristics.
-2. Read alignment: Mapping of sequencing reads to the human reference genome (GRCh38) using BWA-MEM.
-3. Alignment processing: Sorting, duplicate marking, and base quality score recalibration (BQSR).
-4. Somatic variant calling: Identification of tumor-specific variants using GATK Mutect2.
-5. Variant filtering: Removal of likely sequencing artifacts and low-confidence variant calls.
-6. Variant annotation: Identification of genes, transcripts, and protein consequences affected by somatic variants.
+The primary output is a set of filtered somatic variants and the patient HLA genotype.
 
-The primary output is a set of filtered somatic variants suitable for downstream neoepitope prediction.
+### 3.2 RNA-seq Processing (`RNAseq/`)
 
-### 3.2 RNA-seq Processing
-
-RNA-seq analysis provides transcriptional information to support the interpretation and prioritization of candidate neoepitopes.
-
-The workflow includes:
-
-1. Quality control: Evaluation of raw sequencing reads.
-2. UMI extraction: Extraction of UMIs from the library-specific read structure using UMI-tools.
-3. Adapter and quality trimming: Removal of adapter sequences and low-quality bases.
-4. RNA contamination filtering: Removal of reads originating from abundant non-coding RNA species, including ribosomal RNA (rRNA), transfer RNA (tRNA), and small nucleolar RNA (snoRNA), where applicable.
-5. Read alignment: Two-step mapping of filtered reads to the human reference genome using HISAT2 and BWA-mem.
-6. UMI-aware duplicate handling: Identification of PCR duplicates using UMI information.
-7. Transcript analysis: Assessment of gene expression and transcript structures.
-
-RNA-seq results can be used to evaluate the expression of genes containing somatic variants and provide additional evidence for candidate neoepitopes.
+1. Quality control (`QC/01_fastqc`): FastQC on the raw reads.
+2. UMI extraction and adapter trimming (`01_preprocessing`): UMI-tools and Cutadapt.
+3. RNA contamination filtering (`02_rna_filtering`): sequential removal of rRNA, tRNA and sn/snoRNA reads with HISAT2.
+4. Read alignment (`03_alignment`): two-step mapping with HISAT2, followed by BWA-MEM for pairs HISAT2 could not align.
+5. UMI-aware duplicate removal (`04_expression`): UMI-tools dedup.
+6. Expression quantification (`04_expression`): Kallisto, summarised to gene level with tximport.
+7. Allele-specific expression (`05_allele_specific_expression`): GATK ASEReadCounter at somatic variant positions.
 
 ### 3.3 HLA Typing
 
-Patient-specific HLA alleles can be identified using:
+- Implemented: HLA-HD on WGS data (`WGS/04_HLA_typing`).
+- *(planned)*: HLA-LA on WGS data and seq2HLA on RNA-seq data.
 
-- HLA-LA / HLA-HD: HLA genotyping using genomic sequencing data.
-- seq2HLA: HLA typing using RNA-seq data.
+The resulting HLA genotype is used as input for peptide–HLA binding prediction.
 
-The resulting HLA genotypes are used as inputs for peptide–HLA binding prediction.
+### 3.4 Neoepitope Prediction (`Neoepitope/01_prediction`)
 
-### 3.4 Neoepitope Prediction
+- MuPeXI translates somatic variants into mutant peptides, integrates expression and predicts MHC class I binding with netMHCpan (MuPeXI runs VEP and netMHCpan itself).
+- `netmhcpan.sh` runs netMHCpan stand-alone on any peptide FASTA.
+- MHC class II prediction with netMHCIIpan *(planned)*.
 
-Somatic variants are translated into candidate mutant peptide sequences based on their predicted effects on protein-coding transcripts.
+### 3.5 Neoepitope Prioritization *(planned)*
 
-Candidate peptides are subsequently evaluated for their predicted binding to patient-specific HLA molecules.
+Candidate neoepitopes can be prioritized by integrating predicted binding (percentile rank), expression of the corresponding transcript, variant allele frequency, tumor purity and clonality, and potential HLA loss.
 
-The workflow supports:
+### 3.6 Data Flow Between Modules
 
-- MHC class I prediction: Using netMHCpan to evaluate candidate peptides for presentation by HLA class I molecules.
-- MHC class II prediction: Using netMHCIIpan to evaluate candidate peptides for presentation by HLA class II molecules.
+```mermaid
+flowchart LR
+    subgraph WGS
+        A[FASTQ tumor + normal] --> B[01 alignment] --> C[02 markdup + BQSR] --> D[03 Mutect2 + PASS filter]
+        A --> H[04 HLA-HD]
+    end
+    subgraph RNAseq
+        R[FASTQ tumor RNA] --> R1[01 UMI + trimming] --> R2[02 ncRNA filtering] --> R3[03 HISAT2 + BWA-MEM] --> R4[04 dedup + Kallisto]
+        R4 -.dedup BAM.-> R5[05 ASEReadCounter]
+    end
+    D -->|PASS VCF| P[Neoepitope: MuPeXI]
+    H -->|HLA alleles| P
+    R4 -->|transcript TPM| P
+    D -.-> R5
+```
 
-### 3.5 Neoepitope Prioritization
-
-Candidate neoepitopes can be prioritized by integrating multiple features, including:
-
-- Predicted peptide–HLA binding affinity or percentile rank.
-- Expression of the corresponding gene or transcript.
-- Variant allele frequency and sequencing support.
-- Estimated tumor purity and variant clonality.
-- HLA genotype and potential HLA allele loss.
-
-The aim is to identify a set of candidate neoepitopes for further experimental validation or potential inclusion in personalized cancer vaccines.
+| From | Output | Used by |
+|------|--------|---------|
+| `WGS/03_variant_calling` | PASS-filtered somatic VCF | MuPeXI (`Neoepitope/01_prediction`), ASEReadCounter (`RNAseq/05`) |
+| `WGS/04_HLA_typing` | HLA-HD result (`<sample>/result/<sample>_final.result.txt`) | copied manually into an HLA allele file for MuPeXI / netMHCpan |
+| `RNAseq/04_expression` | Kallisto `abundance.tsv` (transcript level) | MuPeXI expression input |
+| `RNAseq/04_expression` | deduplicated RNA BAM | ASEReadCounter (`RNAseq/05`) |
 
 ## 4. Repository Structure
 
-The repository is organized into independent modules corresponding to the main stages of the analysis.
+Each module folder contains one or more analysis scripts (`*.sh`, `*.R`), a PBS submission wrapper per script (`submit_*.pbs`) and a `README.md` describing inputs, outputs, software versions and resources.
 
 ```text
 Neoepitope-prediction-pipeline/
 ├── README.md
 ├── LICENSE
-├── .gitignore
+├── CITATION.cff
+├── run_pipeline.sh                    submits all steps for one patient with PBS dependencies
+├── config/
+│   └── config.sh                      template with sample and reference paths
+├── environment/
+│   └── software_versions.tsv          module version used by every step
+├── QC/
+│   └── 01_fastqc/                     FastQC on raw reads
 ├── WGS/
-│   ├── 01_alignment/
-│   ├── 02_preprocessing/
-│   └── 03_variant_calling/
+│   ├── 01_alignment/                  BWA-MEM alignment and sorting
+│   ├── 02_preprocessing/              duplicate marking and BQSR
+│   ├── 03_variant_calling/            Mutect2, filtering, VEP annotation
+│   └── 04_HLA_typing/                 HLA-HD
 ├── RNAseq/
-│   ├── 01_UMI_extraction/
-│   ├── 02_RNA_filtering/
-│   └── 03_alignment/
-├── HLA/
-│   └── 01_HLA_typing/
-└── RNAseq/06_neoepitope_prediction/
-    ├── 01_variant_annotation/
-    ├── 02_peptide_generation/
-    └── 03_binding_prediction/
+│   ├── 01_preprocessing/              UMI extraction and adapter trimming
+│   ├── 02_rna_filtering/              rRNA / tRNA / snoRNA removal
+│   ├── 03_alignment/                  HISAT2 + BWA-MEM two-step alignment
+│   ├── 04_expression/                 UMI deduplication and Kallisto quantification
+│   └── 05_allele_specific_expression/ GATK ASEReadCounter
+├── Neoepitope/
+│   └── 01_prediction/                 MuPeXI and netMHCpan
+└── .github/workflows/shellcheck.yml   automatic shellcheck of all scripts
 ```
 
-Each module will contain the corresponding analysis scripts and documentation describing the required inputs, expected outputs, and software dependencies.
+## 5. Running the Pipeline
 
-## 5. Computational Environment
+Every step can be submitted on its own; each module README shows the `qsub` command. To submit all steps for one patient at once:
 
-The analysis scripts are primarily developed for execution on a Linux-based high-performance computing (HPC) environment.
+```bash
+cd /path/to/Neoepitope-prediction-pipeline
+cp config/config.sh config/patient01.sh        # patient copies are not tracked by git
+nano config/patient01.sh                        # replace every CHANGE_ME
+bash run_pipeline.sh config/patient01.sh --dry-run   # print the qsub commands only
+bash run_pipeline.sh config/patient01.sh             # submit
+```
 
-## 6. References and Software
+Jobs are chained with `qsub -W depend=afterok:...`, so a step only starts when the steps it needs have finished successfully. Logs, the repository commit and a copy of the configuration are written to `<OUT_DIR>/logs/`.
 
-Key tools used or planned for the workflow include:
+Neoepitope prediction needs the HLA alleles, which are only known after HLA-HD has run. On the first run leave `HLA_FILE` empty; afterwards fill in the allele file (see `Neoepitope/01_prediction/hla_alleles.example.txt`) and run `bash run_pipeline.sh config/patient01.sh --only-prediction`.
 
-- [BWA](https://github.com/lh3/bwa) — Short-read alignment.
-- [SAMtools](https://www.htslib.org/) — Alignment file processing.
-- [GATK](https://gatk.broadinstitute.org/) — Somatic variant calling and preprocessing.
-- [HISAT2](https://daehwankimlab.github.io/hisat2/) — RNA-seq alignment.
-- [UMI-tools](https://github.com/CGATOxford/UMI-tools) — UMI extraction and duplicate handling.
-- [seq2HLA](https://github.com/TRON-Bioinformatics/seq2HLA) — RNA-seq-based HLA typing.
-- [HLA-LA](https://github.com/DiltheyLab/HLA-LA) — HLA genotyping.
-- [Ensembl VEP](https://www.ensembl.org/info/docs/tools/vep/index.html) — Variant annotation.
-- [netMHCpan / netMHCIIpan](https://services.healthtech.dtu.dk/) — Peptide–MHC binding prediction.
-- [MuPeXI](https://github.com/ambj/MuPeXI) — Neoepitope prediction and prioritization.
+Allele-specific expression (`RNAseq/05`) is not part of `run_pipeline.sh` because it needs a VCF prepared for the RNA BAM; submit it separately.
 
-## 9. Disclaimer
+## 6. Computational Environment
+
+The scripts are written for a Linux HPC cluster with PBS/Torque job scheduling and Lmod/EasyBuild software modules (developed on the UGent VSC Tier-2 clusters). The module loaded for every step is listed in [`environment/software_versions.tsv`](environment/software_versions.tsv). To run elsewhere, install the same versions (for example with Conda/Bioconda) and adapt the `module load` lines in the `submit_*.pbs` wrappers.
+
+To cite this pipeline, use the metadata in [`CITATION.cff`](CITATION.cff).
+
+## 7. References and Software
+
+- [BWA](https://github.com/lh3/bwa) — short-read alignment.
+- [SAMtools](https://www.htslib.org/) — alignment file processing.
+- [biobambam2](https://gitlab.com/german.tischler/biobambam2) — duplicate marking.
+- [GATK](https://gatk.broadinstitute.org/) — BQSR, somatic variant calling, ASEReadCounter.
+- [Ensembl VEP](https://www.ensembl.org/info/docs/tools/vep/index.html) — variant annotation.
+- [HLA-HD](https://www.genome.med.kyoto-u.ac.jp/HLA-HD/) — HLA typing.
+- [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) — read quality control.
+- [UMI-tools](https://github.com/CGATOxford/UMI-tools) — UMI extraction and deduplication.
+- [Cutadapt](https://cutadapt.readthedocs.io/) — adapter trimming.
+- [HISAT2](https://daehwankimlab.github.io/hisat2/) — RNA-seq alignment and ncRNA filtering.
+- [Kallisto](https://pachterlab.github.io/kallisto/) and [tximport](https://bioconductor.org/packages/tximport/) — expression quantification.
+- [MuPeXI](https://github.com/ambj/MuPeXI) — mutant peptide extraction and prioritization.
+- [netMHCpan](https://services.healthtech.dtu.dk/) — peptide–MHC class I binding prediction.
+- *(planned)* [HLA-LA](https://github.com/DiltheyLab/HLA-LA), [seq2HLA](https://github.com/TRON-Bioinformatics/seq2HLA), netMHCIIpan.
+
+## 8. Disclaimer
 
 This repository is intended for research purposes only. Predicted neoepitopes require appropriate experimental validation before any clinical interpretation or application.
